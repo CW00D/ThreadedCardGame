@@ -14,7 +14,7 @@ public class Player {
 
     //Constructor:
     //---------------
-    public Player(String playerName, CardDeck leftCardDeck, CardDeck rightCardDeck) {
+    public Player(Integer playerNumber, CardDeck leftCardDeck, CardDeck rightCardDeck) {
         this.playerNumber = playerNumber;
         this.leftCardDeck = leftCardDeck;
         this.rightCardDeck = rightCardDeck;
