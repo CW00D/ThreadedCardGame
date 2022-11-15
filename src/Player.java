@@ -6,7 +6,7 @@ public class Player {
     //the player number (also their preferred card)
     private Integer playerNumber;
     //the cards in the player's hand
-    private ArrayList<Card> playerHand;
+    private ArrayList<Card> playerHand = new ArrayList<Card>();
     //the deck the player pick cards up from
     private CardDeck leftCardDeck;
     //the deck the player places cards to
@@ -28,6 +28,10 @@ public class Player {
 
     //Methods
     //---------------
+    public void dealCard(Card card){
+        playerHand.add(card);
+    }
+
     public Card playMove(){
         //implements
         return null;

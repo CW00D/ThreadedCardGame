@@ -21,16 +21,6 @@ public class CardGame{
 
     //Methods:
     //---------------
-    private static void createPack(String packLocation) throws FileNotFoundException {
-        System.out.println("Creating Pack");
-        File myObj = new File(packLocation);
-        Scanner myReader = new Scanner(myObj);
-        while (myReader.hasNextLine()) {
-            String data = myReader.nextLine();
-            pack.add(new Card(Integer.parseInt(data)));
-        }
-    }
-
     private static boolean validatePack(String packLocation){
         try {
             File myObj = new File(packLocation);
@@ -70,8 +60,31 @@ public class CardGame{
         }
     }
 
-    private void distributeCards(){
-        //implement
+    private static void createPack(String packLocation) throws FileNotFoundException {
+        System.out.println("Creating Pack");
+        File myObj = new File(packLocation);
+        Scanner myReader = new Scanner(myObj);
+        while (myReader.hasNextLine()) {
+            String data = myReader.nextLine();
+            pack.add(new Card(Integer.parseInt(data)));
+        }
+    }
+
+    private static void distributeCards(){
+        for (int i=0;i<4;i++){
+            System.out.println("Dealing a card to each player. ");
+            for (int j=0;j<numberOfPlayers;j++){
+                System.out.println("    Dealing a card to player " + j);
+                players.get(j).dealCard(pack.get(i*numberOfPlayers + j));
+            }
+        }
+        for (int i=0;i<4;i++){
+            System.out.println("Dealing a card to each deck. ");
+            for (int j=0;j<numberOfPlayers;j++){
+                System.out.println("    Dealing a card to deck " + j);
+                decks.get(j).dealCard(pack.get((i*numberOfPlayers + j) + (4*numberOfPlayers)));
+            }
+        }
     }
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -103,18 +116,20 @@ public class CardGame{
         input.close();
 
         //create decks
+        System.out.println("Creating decks");
         for (int i=1;i<=numberOfPlayers;i++){
-            System.out.println("Creating new card deck " + i);
+            System.out.println("    Creating new card deck " + i);
             decks.add(new CardDeck(i));
         }
 
         //create players
-        for (int i=1;i<=numberOfPlayers;i++) {
-            System.out.println("Creating new player " + i);
-            if (i==1) {
-                players.add(new Player(i, decks.get(numberOfPlayers - 1), decks.get(i-1)));
+        System.out.println("Creating players. ");
+        for (int i=0;i<numberOfPlayers;i++) {
+            System.out.println("    Creating new player " + i);
+            if (i==0) {
+                players.add(new Player(i, decks.get(numberOfPlayers - 1), decks.get(i)));
             } else {
-                players.add(new Player(i, decks.get(i - 2), decks.get(i-1)));
+                players.add(new Player(i, decks.get(i - 1), decks.get(i)));
             }
         }
 
@@ -122,7 +137,8 @@ public class CardGame{
         createPack(packLocationInput);
 
         //distribute cards to players
-        //distribute remaining cards to decks
+        distributeCards();
+
         //start game
 
     }

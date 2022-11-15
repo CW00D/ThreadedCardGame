@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -7,7 +8,7 @@ public class CardDeck {
     //the deck number
     private Integer deckNumber;
     //queue of the cards in a deck
-    private Queue<Card> deckHand;
+    private ArrayList<Card> deckHand = new ArrayList<Card>();
 
     //Constructor:
     //---------------
@@ -23,6 +24,10 @@ public class CardDeck {
 
     //Methods
     //---------------
+    public void dealCard(Card card){
+        deckHand.add(card);
+    }
+
     public Card drawCard(){
         //implement
         return null;
