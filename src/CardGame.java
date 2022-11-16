@@ -21,7 +21,44 @@ public class CardGame{
 
     //Methods:
     //---------------
-    private static boolean validatePack(String packLocation){
+    public static void userInputs(){
+        Scanner input = new Scanner(System.in);
+
+        //checking number of players input is valid
+        boolean validNumOfPlayers = false;
+        Integer integerNumberOfPlayers = null;
+        while(!validNumOfPlayers) {
+            System.out.println("Please enter the number of players: ");
+            String numberOfPlayersInput = input.nextLine();
+            try {
+                integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
+                if (integerNumberOfPlayers <= 0){
+                    System.out.println("Please enter a non negative number of players. ");
+                    validNumOfPlayers = false;
+                } else{
+                    validNumOfPlayers = true;
+                }
+            }
+            catch (NumberFormatException nfe) {
+                System.out.println("wrong type of input");
+            }
+        }
+        numberOfPlayers = integerNumberOfPlayers;
+
+        //checking pack input is valid
+        boolean isValidPackType = false;
+        String packLocationInput = null;
+        while(!isValidPackType) {
+            System.out.println("Please enter pack location: ");
+            packLocationInput = input.nextLine();
+            isValidPackType = validatePack(packLocationInput);
+        }
+        packLocation = packLocationInput;
+
+        input.close();
+    }
+
+    public static boolean validatePack(String packLocation){
         try {
             File myObj = new File(packLocation);
             Scanner myReader = new Scanner(myObj);
@@ -60,7 +97,7 @@ public class CardGame{
         }
     }
 
-    private static void createPack(String packLocation) throws FileNotFoundException {
+    public static void createPack(String packLocation) throws FileNotFoundException {
         System.out.println("Creating Pack");
         File myObj = new File(packLocation);
         Scanner myReader = new Scanner(myObj);
@@ -70,7 +107,7 @@ public class CardGame{
         }
     }
 
-    private static void distributeCards(){
+    public static void distributeCards(){
         for (int i=0;i<4;i++){
             System.out.println("Dealing a card to each player. ");
             for (int j=0;j<numberOfPlayers;j++){
@@ -87,42 +124,16 @@ public class CardGame{
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        //getting user inputs
-        Scanner input = new Scanner(System.in);
-
-        //checking number of players input is valid
-        boolean validNumOfPlayers = false;
-        while(!validNumOfPlayers) {
-            System.out.println("Please enter the number of players: ");
-            String numberOfPlayersInput = input.nextLine();
-            try {
-                numberOfPlayers = Integer.parseInt(numberOfPlayersInput);
-                validNumOfPlayers = true;
-            }
-            catch (NumberFormatException nfe) {
-                System.out.println("wrong type of input");
-            }
-        }
-
-        //getting pack location input and checking if pack is valid
-        boolean isValidPackType = false;
-        String packLocationInput = null;
-        while(!isValidPackType) {
-            System.out.println("Please enter pack location: ");
-            packLocationInput = input.nextLine();
-            isValidPackType = validatePack(packLocationInput);
-        }
-        input.close();
-
-        //create decks
+    public static void createDecks(){
         System.out.println("Creating decks");
         for (int i=1;i<=numberOfPlayers;i++){
             System.out.println("    Creating new card deck " + i);
             decks.add(new CardDeck(i));
         }
 
-        //create players
+    }
+
+    public static void createPlayers(){
         System.out.println("Creating players. ");
         for (int i=0;i<numberOfPlayers;i++) {
             System.out.println("    Creating new player " + i);
@@ -132,14 +143,25 @@ public class CardGame{
                 players.add(new Player(i, decks.get(i - 1), decks.get(i)));
             }
         }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        //getting user inputs
+        userInputs();
+
+        //create decks
+        createDecks();
+        createPlayers();
+
 
         //create pack
-        createPack(packLocationInput);
+        createPack(packLocation);
 
         //distribute cards to players
         distributeCards();
 
         //start game
+        System.out.println("Starting the game. ");
 
     }
 }
