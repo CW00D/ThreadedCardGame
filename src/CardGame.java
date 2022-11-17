@@ -137,36 +137,29 @@ public class CardGame extends Thread{
         }
     }
 
-    public static void distributeCards(){
-        for (int i=0;i<4;i++){
-            System.out.println("Dealing a card to each player. ");
-            for (int j=0;j<numberOfPlayers;j++){
-                System.out.println("    Dealing a card to player " + j);
-                players.get(j).dealCard(pack.get(i*numberOfPlayers + j));
-            }
-        }
-        for (int i=0;i<4;i++){
-            System.out.println("Dealing a card to each deck. ");
-            for (int j=0;j<numberOfPlayers;j++){
-                System.out.println("    Dealing a card to deck " + j);
-                decks.get(j).dealCard(pack.get((i*numberOfPlayers + j) + (4*numberOfPlayers)));
-            }
-        }
-    }
-
     public static void createDecks(){
         System.out.println("Creating decks");
         for (int i=1;i<=numberOfPlayers;i++){
-            System.out.println("    Creating new card deck " + i);
             decks.add(new CardDeck(i));
         }
 
     }
 
+    public static void distributeCards(){
+        for (int i=0;i<4;i++){
+            for (int j=0;j<numberOfPlayers;j++){
+                players.get(j).dealCard(pack.get(i*numberOfPlayers + j));
+            }
+        }
+        for (int i=0;i<4;i++){
+            for (int j=0;j<numberOfPlayers;j++){
+                decks.get(j).dealCard(pack.get((i*numberOfPlayers + j) + (4*numberOfPlayers)));
+            }
+        }
+    }
+
     public static void createPlayers(){
-        System.out.println("Creating players. ");
         for (int i=0;i<numberOfPlayers;i++) {
-            System.out.println("    Creating new player " + i+1);
             if (i==0) {
                 players.add(new Player((i+1), decks.get(numberOfPlayers - 1), decks.get(i)));
             } else {
@@ -182,6 +175,15 @@ public class CardGame extends Thread{
             Player currentPlayer = players.get(i);
             currentPlayer.writeInitialHand();
             currentPlayer.start();
+        }
+    }
+
+    public synchronized void game() {
+        try {
+            startGame();
+            wait();
+        } catch (InterruptedException e) {
+            stopGame();
         }
     }
 
@@ -212,11 +214,10 @@ public class CardGame extends Thread{
         Thread gameThread = new Thread(){
             public void run() {
                 startGame();
-                //wait();
-                stopGame();
             }
         };
         gameThread.start();
+
         //we start a thread which runs the game
         //this thread is waiting to end the game when it is interrupted by one of the players (when the player has won)
         //when interrupted it stops the thread group with

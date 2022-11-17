@@ -35,18 +35,18 @@ public class Player extends Thread{
     public void run(){
         while (!CardGame.getGameWon()){
             //if (checkWin()){
-            System.out.println("Player " + playerNumber + " has played " + numberOfPlays + " times. ");
             if (numberOfPlays >= 5){
-                System.out.println("Player " + playerNumber + " has won");
-                CardGame.setVictorNumber(playerNumber);
-                CardGame.setGameWon(true);
-                //notify thread group
+                setVictoryAttributes();
+                System.out.println("Player " + playerNumber + " has won, victor number is " + CardGame.getVictorNumber());
+                //notify other threads of victory and stop them from running
+            } else {
+                System.out.println("Player " + playerNumber + " plays move. ");
+                playMove();
+                writeMove();
+                numberOfPlays += 1;
             }
-            System.out.println("Player " + playerNumber + " plays move. ");
-            playMove();
-            writeMove();
-            numberOfPlays += 1;
         }
+        writeFinalHand();
     }
 
     //Methods
@@ -55,32 +55,31 @@ public class Player extends Thread{
         playerHand.add(card);
     }
 
-    private Card playMove(){
+    private void playMove(){
+        drawCard();
+        placeCard(playerHand.get(0));
         try {
             FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
             myWriter.write("\nplayer "+this.playerNumber+" draws a n from deck " + leftCardDeck.getDeckNumber());
             myWriter.write("\nplayer "+this.playerNumber+" discards a n to deck " + rightCardDeck.getDeckNumber() );
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        return null;
     }
 
     private synchronized Card drawCard(){
-        //implements
+        System.out.println("    Player " + playerNumber + " draws a card.");
         return null;
     }
 
     private synchronized void placeCard(Card cardToPlace){
-        //implement
+        System.out.println("    Player " + playerNumber + " places a card.");
     }
 
     private Boolean checkWin(){
         if (playerHand.get(0)==playerHand.get(1) && playerHand.get(0)==playerHand.get(2) && playerHand.get(0)==playerHand.get(3)){
-            System.out.println("Player " + this.playerNumber + " declares win. ");
             return true;
         } else {
             return false;
@@ -93,6 +92,11 @@ public class Player extends Thread{
             hand = hand + String.valueOf(playerHand.get(i).getCardValue())+" ";
         }
         return hand;
+    }
+
+    private synchronized void setVictoryAttributes() {
+        CardGame.setVictorNumber(playerNumber);
+        CardGame.setGameWon(true);
     }
 
     public void writeInitialHand(){
@@ -112,7 +116,6 @@ public class Player extends Thread{
             FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt");
             myWriter.write("player "+this.playerNumber+" initial hand "+getPlayerHand()+ "\n");
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -124,7 +127,6 @@ public class Player extends Thread{
             FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
             myWriter.write("\nplayer "+this.playerNumber+" current hand is "+getPlayerHand()+ "\n");
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
@@ -140,7 +142,6 @@ public class Player extends Thread{
                 myWriter.write("player " + playerNumber + " exits\n");
                 myWriter.write("player " + playerNumber + " final hand " + getPlayerHand());
                 myWriter.close();
-                System.out.println("Successfully wrote to the file.");
             } catch (IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
@@ -152,22 +153,10 @@ public class Player extends Thread{
                 myWriter.write("player " + playerNumber + " exits\n");
                 myWriter.write("player " + playerNumber + " final hand " + getPlayerHand());
                 myWriter.close();
-                System.out.println("Successfully wrote to the file.");
             } catch (IOException e) {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
             }
         }
-            //"player " + playerNumber + " wins"
-            //"player " + playerNumber + " exits"
-            //"player " + playerNumber + " final hand " + getPlayerHand()
-
-
-
-        //else output:
-            //"player " + playerNumberOfVictor + " has informed player " + playerNumber + " that player " + playerNumeberOfVictor + " has won"
-            //"player " + playerNumber + " exits"
-            //"player " + playerNumber + " final hand " + getPlayerHand()
     }
-
 }
