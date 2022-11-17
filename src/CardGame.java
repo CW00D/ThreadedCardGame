@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author Christian Wood and Jacob Beeson
  *
  */
-public class CardGame{
+public class CardGame extends Thread{
     //Attributes:
     //---------------
     //private as they should only be used by CardGame instance
@@ -18,8 +18,19 @@ public class CardGame{
     private static ArrayList<Card> pack = new ArrayList<Card>();
     private static int numberOfPlayers;
     private static String packLocation;
+    private static Boolean gameWon;
 
-    // Getters / Setters
+    //Getters and Setters:
+    //---------------
+    public static Boolean getGameWon() {
+        return gameWon;
+    }
+
+    public static void setGameWon(Boolean gameWon) {
+        CardGame.gameWon = gameWon;
+    }
+
+    // check
     public void setNumberOfPlayers(Integer num){
         this.numberOfPlayers = num;
     }
@@ -155,6 +166,14 @@ public class CardGame{
         }
     }
 
+    public static void startGame(){
+        Boolean gameWon=false;
+        System.out.println("Starting the game. ");
+        for (int i=0;i<numberOfPlayers;i++){
+            players.get(i).start();
+        }
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         //getting user inputs
         userInputs();
@@ -163,7 +182,6 @@ public class CardGame{
         createDecks();
         createPlayers();
 
-
         //create pack
         createPack(packLocation);
 
@@ -171,7 +189,13 @@ public class CardGame{
         distributeCards();
 
         //start game
-        System.out.println("Starting the game. ");
+        Thread gameThread = new Thread(){
+            startGame();
 
+        };
+        gameThread.start();
+        //we start a thread which runs the game
+        //this thread is waiting to end the game when it is interrupted by one of the players (when the player has won)
+        //when interrupted it stops the thread group with
     }
 }

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Player {
+public class Player extends Thread{
     //Attributes:
     //---------------
     //the player number (also their preferred card)
@@ -26,13 +26,26 @@ public class Player {
         return playerNumber;
     }
 
+    //run thread:
+    //---------------
+    public void run(){
+        while (!CardGame.getGameWon()){
+            if (checkWin()){
+                CardGame.setGameWon(true);
+                //notify thread group
+            }
+            System.out.println("Player " + playerNumber + " plays move. ");
+            playMove();
+        }
+    }
+
     //Methods
     //---------------
     public void dealCard(Card card){
         playerHand.add(card);
     }
 
-    public Card playMove(){
+    private Card playMove(){
         //implements
         return null;
     }
@@ -47,8 +60,12 @@ public class Player {
     }
 
     private Boolean checkWin(){
-        //implement
-        return null;
+        if (playerHand.get(0)==playerHand.get(1) && playerHand.get(0)==playerHand.get(2) && playerHand.get(0)==playerHand.get(3)){
+            System.out.println("Player " + this.playerNumber + " declares win. ");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public String getPlayerHand(){
