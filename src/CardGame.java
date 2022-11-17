@@ -19,6 +19,16 @@ public class CardGame{
     private static int numberOfPlayers;
     private static String packLocation;
 
+    // Getters / Setters
+    public void setNumberOfPlayers(Integer num){
+        this.numberOfPlayers = num;
+    }
+    public ArrayList getPlayerList(){
+        return players;
+    }
+    public ArrayList getDeckList(){
+        return decks;
+    }
     //Methods:
     //---------------
     public static void userInputs(){
