@@ -19,6 +19,7 @@ public class CardGame extends Thread{
     private static int numberOfPlayers;
     private static String packLocation;
     private static Boolean gameWon;
+    private static Integer victorNumber;
 
     //Getters and Setters:
     //---------------
@@ -26,8 +27,16 @@ public class CardGame extends Thread{
         return gameWon;
     }
 
+    public static Integer getVictorNumber() {
+        return victorNumber;
+    }
+
     public static void setGameWon(Boolean gameWon) {
         CardGame.gameWon = gameWon;
+    }
+
+    public static void setVictorNumber(Integer victorNumber) {
+        CardGame.victorNumber = victorNumber;
     }
 
     // check
@@ -157,20 +166,31 @@ public class CardGame extends Thread{
     public static void createPlayers(){
         System.out.println("Creating players. ");
         for (int i=0;i<numberOfPlayers;i++) {
-            System.out.println("    Creating new player " + i);
+            System.out.println("    Creating new player " + i+1);
             if (i==0) {
-                players.add(new Player(i, decks.get(numberOfPlayers - 1), decks.get(i)));
+                players.add(new Player((i+1), decks.get(numberOfPlayers - 1), decks.get(i)));
             } else {
-                players.add(new Player(i, decks.get(i - 1), decks.get(i)));
+                players.add(new Player((i+1), decks.get(i - 1), decks.get(i)));
             }
         }
     }
 
     public static void startGame(){
-        Boolean gameWon=false;
+        CardGame.gameWon = false;
         System.out.println("Starting the game. ");
         for (int i=0;i<numberOfPlayers;i++){
-            players.get(i).start();
+            Player currentPlayer = players.get(i);
+            currentPlayer.writeInitialHand();
+            currentPlayer.start();
+        }
+    }
+
+    public static void stopGame(){
+        System.out.println("Game over");
+        for (int i=0;i<numberOfPlayers;i++) {
+            Player currentPlayer = players.get(i);
+            System.out.println(victorNumber);
+            currentPlayer.writeFinalHand();
         }
     }
 
@@ -190,8 +210,11 @@ public class CardGame extends Thread{
 
         //start game
         Thread gameThread = new Thread(){
-            startGame();
-
+            public void run() {
+                startGame();
+                //wait();
+                stopGame();
+            }
         };
         gameThread.start();
         //we start a thread which runs the game
