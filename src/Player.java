@@ -36,7 +36,6 @@ public class Player extends Thread{
         while (!CardGame.getGameWon()){
             if (checkWin()){
                 setVictoryAttributes();
-                //notify other threads of victory and stop them from running
             } else {
                 playMove();
                 writeMove();
@@ -59,7 +58,7 @@ public class Player extends Thread{
         try {
             FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
             myWriter.write("\nplayer "+this.playerNumber+" draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
-            myWriter.write("\nplayer "+this.playerNumber+" discards a n to deck " + rightCardDeck.getDeckNumber() );
+            myWriter.write("\nplayer "+this.playerNumber+" discards a " + cardToPlace.getCardValue() + " to deck " + rightCardDeck.getDeckNumber() );
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred writing a move to the file.");
