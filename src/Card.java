@@ -1,7 +1,7 @@
 public class Card {
     //Attributes:
     //---------------
-    private Integer cardValue;
+    private final Integer cardValue;
 
     //Constructor:
     //---------------
@@ -13,9 +13,5 @@ public class Card {
     //---------------
     public Integer getCardValue() {
         return cardValue;
-    }
-
-    public void setCardValue(Integer cardValue) {
-        this.cardValue = cardValue;
     }
 }

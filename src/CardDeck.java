@@ -1,4 +1,6 @@
-import java.lang.reflect.Array;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Queue;
 
@@ -6,7 +8,7 @@ public class CardDeck {
     //Attributes:
     //---------------
     //the deck number
-    private Integer deckNumber;
+    private final Integer deckNumber;
     //queue of the cards in a deck
     private ArrayList<Card> deckHand = new ArrayList<Card>();
 
@@ -29,15 +31,33 @@ public class CardDeck {
     }
 
     public Card drawCard(){
-        //implement
-        return null;
+        return deckHand.remove(0);
     }
 
-    public void addCard(Card cardToAdd){
-        //implement
+    public String getDeck(){
+        String deck = "";
+        for (int i=0;i<deckHand.size();i++) {
+            deck = deck + String.valueOf(deckHand.get(i).getCardValue())+" ";
+        }
+        return deck;
     }
 
     public void writeHand(){
-        //implement
+        try {
+            File myObj = new File("deck" + deckNumber + "_output.txt");
+            myObj.createNewFile();
+        } catch (IOException e) {
+            System.out.println("An error occurred creating a file.");
+            e.printStackTrace();
+        }
+
+        try {
+            FileWriter myWriter = new FileWriter("deck" + deckNumber + "_output.txt");
+            myWriter.write("deck" + deckNumber + " contents: " + getDeck() + "\n");
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred writing deck to a file.");
+            e.printStackTrace();
+        }
     }
 }

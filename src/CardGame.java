@@ -178,24 +178,6 @@ public class CardGame extends Thread{
         }
     }
 
-    public synchronized void game() {
-        try {
-            startGame();
-            wait();
-        } catch (InterruptedException e) {
-            stopGame();
-        }
-    }
-
-    public static void stopGame(){
-        System.out.println("Game over");
-        for (int i=0;i<numberOfPlayers;i++) {
-            Player currentPlayer = players.get(i);
-            System.out.println(victorNumber);
-            currentPlayer.writeFinalHand();
-        }
-    }
-
     public static void main(String[] args) throws FileNotFoundException {
         //getting user inputs
         userInputs();
@@ -211,13 +193,7 @@ public class CardGame extends Thread{
         distributeCards();
 
         //start game
-        Thread gameThread = new Thread(){
-            public void run() {
-                startGame();
-            }
-        };
-        gameThread.start();
-
+        startGame();
         //we start a thread which runs the game
         //this thread is waiting to end the game when it is interrupted by one of the players (when the player has won)
         //when interrupted it stops the thread group with

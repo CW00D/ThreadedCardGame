@@ -2,19 +2,19 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player extends Thread{
     //Attributes:
     //---------------
     //the player number (also their preferred card)
-    private Integer playerNumber;
+    private final Integer playerNumber;
     //the cards in the player's hand
     private ArrayList<Card> playerHand = new ArrayList<Card>();
     //the deck the player pick cards up from
-    private CardDeck leftCardDeck;
+    private final CardDeck leftCardDeck;
     //the deck the player places cards to
-    private CardDeck rightCardDeck;
-    private Integer numberOfPlays = 0;
+    private final CardDeck rightCardDeck;
 
     //Constructor:
     //---------------
@@ -34,19 +34,16 @@ public class Player extends Thread{
     //---------------
     public void run(){
         while (!CardGame.getGameWon()){
-            //if (checkWin()){
-            if (numberOfPlays >= 5){
+            if (checkWin()){
                 setVictoryAttributes();
-                System.out.println("Player " + playerNumber + " has won, victor number is " + CardGame.getVictorNumber());
                 //notify other threads of victory and stop them from running
             } else {
-                System.out.println("Player " + playerNumber + " plays move. ");
                 playMove();
                 writeMove();
-                numberOfPlays += 1;
             }
         }
         writeFinalHand();
+        rightCardDeck.writeHand();
     }
 
     //Methods
@@ -56,39 +53,69 @@ public class Player extends Thread{
     }
 
     private void playMove(){
-        drawCard();
-        placeCard(playerHand.get(0));
+        Card cardDrawn = drawCard();
+        Card cardToPlace = selectCardToDiscard();
+        placeCard(cardToPlace);
         try {
             FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
-            myWriter.write("\nplayer "+this.playerNumber+" draws a n from deck " + leftCardDeck.getDeckNumber());
+            myWriter.write("\nplayer "+this.playerNumber+" draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
             myWriter.write("\nplayer "+this.playerNumber+" discards a n to deck " + rightCardDeck.getDeckNumber() );
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred writing a move to the file.");
             e.printStackTrace();
         }
     }
 
+    //Two players may be able to call placeCard and drawCard simultaneously
     private synchronized Card drawCard(){
-        System.out.println("    Player " + playerNumber + " draws a card.");
-        return null;
+        Card cardToAdd = leftCardDeck.drawCard();
+        playerHand.add(cardToAdd);
+        return cardToAdd;
     }
+    /*This might prevent that
+    private Card drawCard(){
+        synchronized (CardDeck.deckHand) {
+            System.out.println("Player " + playerNumber + " draws a card. From a deck with " + leftCardDeck.getDeck());
+            return leftCardDeck.drawCard();
+        }
+    }
+    */
 
     private synchronized void placeCard(Card cardToPlace){
-        System.out.println("    Player " + playerNumber + " places a card.");
+        rightCardDeck.dealCard(cardToPlace);
     }
 
     private Boolean checkWin(){
-        if (playerHand.get(0)==playerHand.get(1) && playerHand.get(0)==playerHand.get(2) && playerHand.get(0)==playerHand.get(3)){
+        if (playerHand.get(0).getCardValue()==playerHand.get(1).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(2).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(3).getCardValue()){
             return true;
         } else {
             return false;
         }
     }
 
+    private Card selectCardToDiscard(){
+        ArrayList<Card> possibleDiscardCards = new ArrayList<Card>();
+        for (int i=0;i<playerHand.size();i++){
+            if (playerHand.get(i).getCardValue() != playerNumber) {
+                possibleDiscardCards.add(playerHand.get(i));
+            }
+        }
+        Random random = new Random();
+        int randomIndex = -1;
+        if (possibleDiscardCards.size()==1){
+            randomIndex = 0;
+        } else {
+            random.nextInt(possibleDiscardCards.size() - 1);
+        }
+        Card cardToDiscard = possibleDiscardCards.get(randomIndex);
+        playerHand.remove(cardToDiscard);
+        return cardToDiscard;
+    }
+
     private String getPlayerHand(){
         String hand = "";
-        for (int i=0;i<4;i++) {
+        for (int i=0;i<playerHand.size();i++) {
             hand = hand + String.valueOf(playerHand.get(i).getCardValue())+" ";
         }
         return hand;
@@ -101,23 +128,19 @@ public class Player extends Thread{
 
     public void writeInitialHand(){
         try {
-            File myObj = new File("player"+this.playerNumber+"_output.txt");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
+            File myObj = new File("player" + playerNumber + "_output.txt");
+            myObj.createNewFile();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred creating a file.");
             e.printStackTrace();
         }
 
         try {
-            FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt");
-            myWriter.write("player "+this.playerNumber+" initial hand "+getPlayerHand()+ "\n");
+            FileWriter myWriter = new FileWriter("player" + playerNumber + "_output.txt");
+            myWriter.write("player " + playerNumber + " initial hand " + getPlayerHand() + "\n");
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred writing initial hand to a file.");
             e.printStackTrace();
         }
     }
@@ -128,7 +151,7 @@ public class Player extends Thread{
             myWriter.write("\nplayer "+this.playerNumber+" current hand is "+getPlayerHand()+ "\n");
             myWriter.close();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            System.out.println("An error occurred writing a move to a file.");
             e.printStackTrace();
         }
     }
@@ -143,7 +166,7 @@ public class Player extends Thread{
                 myWriter.write("player " + playerNumber + " final hand " + getPlayerHand());
                 myWriter.close();
             } catch (IOException e) {
-                System.out.println("An error occurred.");
+                System.out.println("An error occurred writing this player's win to a file.");
                 e.printStackTrace();
             }
         } else {
@@ -154,7 +177,7 @@ public class Player extends Thread{
                 myWriter.write("player " + playerNumber + " final hand " + getPlayerHand());
                 myWriter.close();
             } catch (IOException e) {
-                System.out.println("An error occurred.");
+                System.out.println("An error occurred writing another player's win to a file.");
                 e.printStackTrace();
             }
         }
