@@ -106,7 +106,7 @@ public class Player extends Thread{
         if (possibleDiscardCards.size()==1){
             randomIndex = 0;
         } else {
-            random.nextInt(possibleDiscardCards.size() - 1);
+            randomIndex = random.nextInt(possibleDiscardCards.size() - 1);
         }
         Card cardToDiscard = possibleDiscardCards.get(randomIndex);
         playerHand.remove(cardToDiscard);
