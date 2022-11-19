@@ -56,9 +56,9 @@ public class Player extends Thread{
         Card cardToPlace = selectCardToDiscard();
         placeCard(cardToPlace);
         try {
-            FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
-            myWriter.write("\nplayer "+this.playerNumber+" draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
-            myWriter.write("\nplayer "+this.playerNumber+" discards a " + cardToPlace.getCardValue() + " to deck " + rightCardDeck.getDeckNumber() );
+            FileWriter myWriter = new FileWriter("player" + playerNumber+"_output.txt", true);
+            myWriter.write("\nplayer " + playerNumber + " draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
+            myWriter.write("\nplayer " + playerNumber + " discards a " + cardToPlace.getCardValue() + " to deck " + rightCardDeck.getDeckNumber() );
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred writing a move to the file.");
