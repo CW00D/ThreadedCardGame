@@ -10,11 +10,13 @@ public class Player extends Thread{
     //the player number (also their preferred card)
     private final Integer playerNumber;
     //the cards in the player's hand
-    private ArrayList<Card> playerHand = new ArrayList<Card>();
+    private ArrayList<Card> playerHand = new ArrayList<>();
     //the deck the player pick cards up from
     private final CardDeck leftCardDeck;
     //the deck the player places cards to
     private final CardDeck rightCardDeck;
+    //randomizer instance for use in selecting cards
+    Random random = new Random();
 
     //Constructor:
     //---------------
@@ -32,6 +34,7 @@ public class Player extends Thread{
 
     //run thread:
     //---------------
+    @Override
     public void run(){
         while (!CardGame.getGameWon()){
             if (checkWin()){
@@ -52,11 +55,16 @@ public class Player extends Thread{
     }
 
     private void playMove(){
-        Card cardDrawn = drawCard();
-        Card cardToPlace = selectCardToDiscard();
-        placeCard(cardToPlace);
+        Card cardToPlace;
+        Card cardDrawn;
+        synchronized (Player.class) {
+            cardDrawn = drawCard();
+            playerHand.add(cardDrawn);
+            cardToPlace = selectCardToDiscard();
+            placeCard(cardToPlace);
+        }
         try {
-            FileWriter myWriter = new FileWriter("player" + playerNumber+"_output.txt", true);
+            FileWriter myWriter = new FileWriter("player" + playerNumber + "_output.txt", true);
             myWriter.write("\nplayer " + playerNumber + " draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
             myWriter.write("\nplayer " + playerNumber + " discards a " + cardToPlace.getCardValue() + " to deck " + rightCardDeck.getDeckNumber() );
             myWriter.close();
@@ -66,41 +74,26 @@ public class Player extends Thread{
         }
     }
 
-    //Two players may be able to call placeCard and drawCard simultaneously
-    private synchronized Card drawCard(){
+    private Card drawCard(){
         Card cardToAdd = leftCardDeck.drawCard();
-        playerHand.add(cardToAdd);
         return cardToAdd;
     }
-    /*This might prevent that
-    private Card drawCard(){
-        synchronized (CardDeck.deckHand) {
-            System.out.println("Player " + playerNumber + " draws a card. From a deck with " + leftCardDeck.getDeck());
-            return leftCardDeck.drawCard();
-        }
-    }
-    */
 
-    private synchronized void placeCard(Card cardToPlace){
+    private void placeCard(Card cardToPlace){
         rightCardDeck.dealCard(cardToPlace);
     }
 
     private Boolean checkWin(){
-        if (playerHand.get(0).getCardValue()==playerHand.get(1).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(2).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(3).getCardValue()){
-            return true;
-        } else {
-            return false;
-        }
+        return (playerHand.get(0).getCardValue().equals(playerHand.get(1).getCardValue()) && playerHand.get(0).getCardValue().equals(playerHand.get(2).getCardValue()) && playerHand.get(0).getCardValue().equals(playerHand.get(3).getCardValue()));
     }
 
     private Card selectCardToDiscard(){
-        ArrayList<Card> possibleDiscardCards = new ArrayList<Card>();
+        ArrayList<Card> possibleDiscardCards = new ArrayList<>();
         for (int i=0;i<playerHand.size();i++){
-            if (playerHand.get(i).getCardValue() != playerNumber) {
+            if (!(playerHand.get(i).getCardValue().equals(playerNumber))) {
                 possibleDiscardCards.add(playerHand.get(i));
             }
         }
-        Random random = new Random();
         int randomIndex = -1;
         if (possibleDiscardCards.size()==1){
             randomIndex = 0;
