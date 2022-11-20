@@ -40,8 +40,10 @@ public class Player extends Thread{
             if (checkWin()){
                 setVictoryAttributes();
             } else {
-                playMove();
-                writeMove();
+                if (leftCardDeck.getDeckHand().size()!=0){
+                    playMove();
+                    writeMove();
+                }
             }
         }
         writeFinalHand();

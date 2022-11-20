@@ -24,6 +24,10 @@ public class CardDeck {
         return deckNumber;
     }
 
+    public ArrayList<Card> getDeckHand() {
+        return deckHand;
+    }
+
     //Methods
     //---------------
     public void dealCard(Card card){
