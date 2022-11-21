@@ -22,7 +22,7 @@ public class Player extends Thread{
     //the deck the player places cards to
     private final CardDeck rightCardDeck;
     //randomizer instance for use in selecting cards
-    Random random = new Random();
+    private Random random = new Random();
 
     //Constructor:
     //---------------
