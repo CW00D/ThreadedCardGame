@@ -188,6 +188,8 @@ public class CardGame extends Thread{
             Player currentPlayer = players.get(i);
             currentPlayer.start();
         }
+        // Needed system output displaying winner
+        System.out.println("player "+CardGame.getVictorNumber()+" wins");
 
     }
 
