@@ -132,19 +132,22 @@ public class CardGameTest {
                 String data = myReader.nextLine();
                 switch(count){
                     case 1:
-                        assertTrue("mesage",data =="some string");
+                        assertEquals("Wrong initial hand output", "player 1 initial hand 1 1 1 5 ", data);
                         break;
                     case 2:
-                        assertTrue("mesage",data =="some string");
+                        assertEquals("No data should be present", "", data);
                         break;
                     case 3:
-                        assertTrue("mesage",data =="some string");
+                        assertEquals("Wrong win output", "player 2 has informed player 1 that player 2 has won", data);
                         break;
                     case 4:
-                        assertTrue("mesage",data =="some string");
+                        assertEquals("Wrong exit output", "player 1 exits", data);
                         break;
                     case 5:
-                        System.out.println("fail");
+                        assertEquals("Wrong final hand output", "player 1 final hand 1 1 1 5 ", data);
+                        break;
+                    case 6:
+                        System.out.println("Should not have data here");
                         break;
                 }
             }
