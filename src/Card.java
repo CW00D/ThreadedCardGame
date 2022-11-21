@@ -1,3 +1,9 @@
+/*
+ *
+ * @author Christian Wood and Jacob Beeson
+ *
+ */
+
 public class Card {
     //Attributes:
     //---------------

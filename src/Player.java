@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ *
+ * @author Christian Wood and Jacob Beeson
+ *
+ */
+
 public class Player extends Thread{
     //Attributes:
     //---------------

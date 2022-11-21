@@ -2,7 +2,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Queue;
+
+/**
+ *
+ * @author Christian Wood and Jacob Beeson
+ *
+ */
 
 public class CardDeck {
     //Attributes:

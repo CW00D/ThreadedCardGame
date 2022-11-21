@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * This is the implementor class for the CardGameInterface
  *
  * @author Christian Wood and Jacob Beeson
  *
  */
+
 public class CardGame extends Thread{
     //Attributes:
     //---------------
