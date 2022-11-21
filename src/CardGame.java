@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * This is the implementor class for the CardGameInterface
  *
  * @author Christian Wood and Jacob Beeson
  *
  */
+
 public class CardGame extends Thread{
     //Attributes:
     //---------------
@@ -177,11 +177,18 @@ public class CardGame extends Thread{
     public static void startGame(){
         CardGame.gameWon = false;
         System.out.println("Starting the game. ");
-        for (int i=0;i<numberOfPlayers;i++){
+        for (int i=0;i<numberOfPlayers;i++) {
             Player currentPlayer = players.get(i);
             currentPlayer.writeInitialHand();
+            if (currentPlayer.checkWin()) {
+                currentPlayer.setVictoryAttributes();
+            }
+        }
+        for (int i=0;i<numberOfPlayers;i++) {
+            Player currentPlayer = players.get(i);
             currentPlayer.start();
         }
+
     }
 
     public static void main(String[] args) throws FileNotFoundException {

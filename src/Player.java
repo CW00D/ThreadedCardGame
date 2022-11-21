@@ -88,7 +88,7 @@ public class Player extends Thread{
         rightCardDeck.dealCard(cardToPlace);
     }
 
-    private Boolean checkWin(){
+    public Boolean checkWin(){
         if (playerHand.get(0).getCardValue()==playerHand.get(1).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(2).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(3).getCardValue()){
             return true;
         } else {
@@ -123,7 +123,7 @@ public class Player extends Thread{
         return hand;
     }
 
-    private synchronized void setVictoryAttributes() {
+    public synchronized void setVictoryAttributes() {
         CardGame.setVictorNumber(playerNumber);
         CardGame.setGameWon(true);
     }

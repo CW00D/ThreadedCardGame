@@ -8,6 +8,9 @@ import org.junit.AfterClass;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.io.File;  // Import the File class
+import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.Scanner; // Import the Scanner class to read text files
 
 public class CardGameTest {
     // userInputs() private ????
@@ -114,10 +117,51 @@ public class CardGameTest {
     }
     @Test
     public void outputFileTest(){
-
+        Player p1 = (Player) CardGame.getPlayerList().get(1);
+        CardGame.setVictorNumber(1);
+        p1.writeInitialHand();
+        p1.writeMove();
+        p1.writeFinalHand();
+        //assert(file created / read correct hand
+        try {
+            File myObj = new File("player1_output.txt");
+            Scanner myReader = new Scanner(myObj);
+            int count = 0;
+            while (myReader.hasNextLine()) {
+                count +=1;
+                String data = myReader.nextLine();
+                switch(count){
+                    case 1:
+                        assertTrue("mesage",data =="some string");
+                        break;
+                    case 2:
+                        assertTrue("mesage",data =="some string");
+                        break;
+                    case 3:
+                        assertTrue("mesage",data =="some string");
+                        break;
+                    case 4:
+                        assertTrue("mesage",data =="some string");
+                        break;
+                    case 5:
+                        System.out.println("fail");
+                        break;
+                }
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
     }
     @Test
     public void playerWinTest(){
+        CardGame.setGameWon(false);
+        Player p1 = (Player) CardGame.getPlayerList().get(1);
+        p1.run();
+        assertEquals("Wrong test pack used or error in run()", 2, (int) CardGame.getVictorNumber());
+        assertTrue("Wrong test pack used or error in run()",CardGame.getGameWon());
+
 
     }
 }
