@@ -40,14 +40,20 @@ public class CardGame extends Thread{
     }
 
     // check
-    public void setNumberOfPlayers(Integer num){
-        this.numberOfPlayers = num;
+    public static void setNumberOfPlayers(Integer num){
+        numberOfPlayers = num;
     }
-    public ArrayList getPlayerList(){
+
+    public static ArrayList getPlayerList(){
         return players;
     }
-    public ArrayList getDeckList(){
+
+    public static ArrayList getDeckList(){
         return decks;
+    }
+
+    public static ArrayList getPack(){
+        return pack;
     }
     //Methods:
     //---------------

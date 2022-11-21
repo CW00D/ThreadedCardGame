@@ -30,6 +30,9 @@ public class Player extends Thread{
         return playerNumber;
     }
 
+    public ArrayList getPlayerHandList(){
+        return playerHand;
+    }
     //run thread:
     //---------------
     public void run(){
@@ -93,7 +96,7 @@ public class Player extends Thread{
         }
     }
 
-    private Card selectCardToDiscard(){
+    public Card selectCardToDiscard(){
         ArrayList<Card> possibleDiscardCards = new ArrayList<Card>();
         for (int i=0;i<playerHand.size();i++){
             if (playerHand.get(i).getCardValue() != playerNumber) {
@@ -112,7 +115,7 @@ public class Player extends Thread{
         return cardToDiscard;
     }
 
-    private String getPlayerHand(){
+    public String getPlayerHand(){
         String hand = "";
         for (int i=0;i<playerHand.size();i++) {
             hand = hand + String.valueOf(playerHand.get(i).getCardValue())+" ";
