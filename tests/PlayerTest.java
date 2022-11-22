@@ -1,5 +1,5 @@
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -9,40 +9,40 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public class PlayerTest {
-    @BeforeClass
-    public static void setUp(){
-        CardGame.setNumberOfPlayers(4);
+    public Game game = new Game();
+
+    @Before
+    public void setUp(){
+        game.setNumberOfPlayers(4);
         try {
-            CardGame.createDecks();
+            game.createDecks();
         } catch (Exception e){
             System.out.println("Unable to create decks");
         }
 
         try {
-            CardGame.createPlayers();
+            game.createPlayers();
         } catch (Exception e){
             System.out.println("Unable to create players");
         }
 
         try {
-            CardGame.createPack("test_pack_0.txt");
+            game.createPack("test_pack_0.txt");
         } catch (FileNotFoundException e){
             System.out.println("Unable to create testing pack: FileNotFoundException");
         }
 
         try {
-            CardGame.distributeCards();
+            game.distributeCards();
         } catch (Exception e){
             System.out.println("Unable to distribute cards");
         }
-
     }
-    @AfterClass
-    public static void tearDown() {
-        CardGame.setPack();
-        CardGame.setPlayerList();
-        CardGame.setDeckList();
-        for (int i = 0; i < 4; i++) {
+    @After
+    public  void tearDown(){
+        game = null;
+
+        for (int i=0;i<4;i++) {
             File playerFile = new File("player" + i + "_output.txt");
             try {
                 playerFile.delete();
@@ -50,7 +50,7 @@ public class PlayerTest {
             }
         }
 
-        for (int j = 0; j < 4; j++) {
+        for (int j=0;j<4;j++) {
             File deckFile = new File("deck" + j + "_output.txt");
             try {
                 deckFile.delete();
@@ -61,7 +61,7 @@ public class PlayerTest {
 
     @Test
     public void selectCardToDiscardTest(){
-        Player p1 = (Player) CardGame.getPlayerList().get(0);
+        Player p1 = (Player) game.getPlayerList().get(0);
         Card card = p1.selectCardToDiscard();
 
         assertTrue("Discards players preferred card",p1.getPlayerNumber() != card.getCardValue());
@@ -70,16 +70,16 @@ public class PlayerTest {
 
     @Test
     public void getPlayerHandTest(){
-        Player p1 = (Player) CardGame.getPlayerList().get(0);
+        Player p1 = (Player) game.getPlayerList().get(0);
         String hand = p1.getPlayerHand();
         assertEquals("Incorrect player hand or test pack format","1 1 1 5 ", hand);
     }
 
     @Test
     public void outputPlayerFileTest(){
-        Player p1 = (Player) CardGame.getPlayerList().get(0);
+        Player p1 = (Player) game.getPlayerList().get(0);
         System.out.println(p1.getPlayerNumber());
-        CardGame.setVictorNumber(2);
+        game.setVictorNumber(2);
         p1.writeInitialHand();
         p1.writeFinalHand();
         //assert(file created / read correct hand
@@ -119,22 +119,22 @@ public class PlayerTest {
     }
     @Test
     public void playerWinTest(){
-        CardGame.setGameWon(false);
-        Player p1 = (Player) CardGame.getPlayerList().get(1);
+        game.setGameWon(false);
+        Player p1 = (Player) game.getPlayerList().get(1);
         p1.run();
-        assertEquals("Wrong test pack used or error in run()", 2, (int) CardGame.getVictorNumber());
-        assertTrue("Wrong test pack used or error in run()",CardGame.getGameWon());
+        assertEquals("Wrong test pack used or error in run()", 2, (int) game.getVictorNumber());
+        assertTrue("Wrong test pack used or error in run()",game.getGameWon());
 
 
     }
 
     @Test
     public void playMoveTest(){
-        CardGame.setGameWon(false);
-        Player p3 = (Player) CardGame.getPlayerList().get(2);
+        game.setGameWon(false);
+        Player p3 = (Player) game.getPlayerList().get(2);
         p3.run();
-        assertTrue(CardGame.getGameWon());
-        assertTrue("Wrong move made",3 == CardGame.getVictorNumber());
+        assertTrue(game.getGameWon());
+        assertTrue("Wrong move made",3 == game.getVictorNumber());
 
     }
 }
