@@ -128,4 +128,11 @@ public class PlayerTest {
 
     }
 
+    @Test
+    public void playMoveTest(){
+        CardGame.setGameWon(false);
+        Player p1 = (Player) CardGame.getPlayerList().get(2);
+        p1.run();
+
+    }
 }

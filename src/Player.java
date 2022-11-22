@@ -125,6 +125,7 @@ public class Player extends Thread{
     public synchronized void setVictoryAttributes() {
         CardGame.setVictorNumber(playerNumber);
         CardGame.setGameWon(true);
+        System.out.println("player "+CardGame.getVictorNumber()+" wins");
     }
 
     public void writeInitialHand(){
