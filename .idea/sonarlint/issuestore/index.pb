@@ -5,8 +5,6 @@
 test_pack_1.txt,6\f\6f5e88c7cb9088c842ab2951f22db9810d298b7e
 ?
 test_pack_0.txt,8\b\8b8ac7748bd2d3ad79afbd69dfe82df594fd94a0
-G
-tests/CardGameTest.java,8\8\88b85032353bac7372ac5123357fbf0853b18a02
 =
 test_pack.txt,e\1\e1d8777be62637a7c7ec790435fc6bccaa50c606
 B
@@ -25,8 +23,6 @@ B
 deck1_output.txt,a\1\a17905998b51b9443533d2faf66936da565fc73e
 @
 deck3_output.txt,3\7\3760925405b51c087df38293682c4ad2ca93ce48
-G
-tests/CardDeckTest.java,4\4\44cde30d8666fc94ccb3adf052cb6f306e4ba4ef
 E
 tests/PlayerTest.java,1\1\113e2bfcb035a455d2f01c5dda6b6635a5c1434b
 D
