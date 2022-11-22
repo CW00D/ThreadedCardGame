@@ -1,5 +1,5 @@
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -10,39 +10,40 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public class CardDeckTest {
-    @BeforeClass
-    public static void setUp(){
-        CardGame.setNumberOfPlayers(4);
+    public Game game = new Game();
+
+    @Before
+    public void setUp(){
+        game.setNumberOfPlayers(4);
         try {
-            CardGame.createDecks();
+            game.createDecks();
         } catch (Exception e){
             System.out.println("Unable to create decks");
         }
 
         try {
-            CardGame.createPlayers();
+            game.createPlayers();
         } catch (Exception e){
             System.out.println("Unable to create players");
         }
 
         try {
-            CardGame.createPack("test_pack_0.txt");
+            game.createPack("test_pack_0.txt");
         } catch (FileNotFoundException e){
             System.out.println("Unable to create testing pack: FileNotFoundException");
         }
 
         try {
-            CardGame.distributeCards();
+            game.distributeCards();
         } catch (Exception e){
             System.out.println("Unable to distribute cards");
         }
 
     }
-    @AfterClass
-    public static void tearDown(){
-        CardGame.setPack();
-        CardGame.setPlayerList();
-        CardGame.setDeckList();
+    @After
+    public  void tearDown(){
+        game = null;
+
         for (int i=0;i<4;i++) {
             File playerFile = new File("player" + i + "_output.txt");
             try {
@@ -61,7 +62,7 @@ public class CardDeckTest {
     }
     @Test
     public void getDeckHandTest() {
-        ArrayList deckList = CardGame.getDeckList();
+        ArrayList deckList = game.getDeckList();
         CardDeck d1 = (CardDeck) deckList.get(0);
         String deckHand = d1.getDeck();
         assertEquals("Incorrect player hand or test pack format", "5 5 5 5 ", deckHand);
@@ -69,7 +70,7 @@ public class CardDeckTest {
 
     @Test
     public void outputDeckFileTest(){
-        CardDeck d1 = (CardDeck) CardGame.getDeckList().get(0);
+        CardDeck d1 = (CardDeck) game.getDeckList().get(0);
         d1.writeHand();
         //assert(file created / read correct hand
         try {

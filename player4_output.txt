@@ -1,0 +1,5 @@
+player 4 initial hand 4 8 12 16 
+
+player 2 has informed player 4 that player 2 has won
+player 4 exits
+player 4 final hand 4 8 12 16 

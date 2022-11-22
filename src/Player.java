@@ -22,15 +22,18 @@ public class Player extends Thread{
     private final CardDeck leftCardDeck;
     //the deck the player places cards to
     private final CardDeck rightCardDeck;
+    //the game instance the player belongs to
+    private final Game gameInstance;
     //randomizer instance for use in selecting cards
     private Random random = new Random();
 
     //Constructor:
     //---------------
-    public Player(Integer playerNumber, CardDeck leftCardDeck, CardDeck rightCardDeck) {
+    public Player(Integer playerNumber, CardDeck leftCardDeck, CardDeck rightCardDeck, Game gameInstance) {
         this.playerNumber = playerNumber;
         this.leftCardDeck = leftCardDeck;
         this.rightCardDeck = rightCardDeck;
+        this.gameInstance = gameInstance;
     }
 
     //Getters and Setters:
@@ -43,7 +46,7 @@ public class Player extends Thread{
     //---------------
     @Override
     public void run(){
-        while (!CardGame.getGameWon()){
+        while (!gameInstance.getGameWon()){
             if (checkWin()){
                 setVictoryAttributes();
             } else {
@@ -123,9 +126,9 @@ public class Player extends Thread{
     }
 
     public synchronized void setVictoryAttributes() {
-        CardGame.setVictorNumber(playerNumber);
-        CardGame.setGameWon(true);
-        System.out.println("player "+CardGame.getVictorNumber()+" wins");
+        gameInstance.setVictorNumber(playerNumber);
+        gameInstance.setGameWon(true);
+        System.out.println("player "+gameInstance.getVictorNumber()+" wins");
     }
 
     public void writeInitialHand(){
@@ -159,7 +162,7 @@ public class Player extends Thread{
     }
 
     public void writeFinalHand(){
-        Integer playerNumberOfVictor = CardGame.getVictorNumber();
+        Integer playerNumberOfVictor = gameInstance.getVictorNumber();
         if (playerNumberOfVictor == playerNumber){
             try {
                 FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
@@ -174,7 +177,7 @@ public class Player extends Thread{
         } else {
             try {
                 FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
-                myWriter.write("\nplayer " + CardGame.getVictorNumber() + " has informed player " + playerNumber + " that player " + CardGame.getVictorNumber() + " has won\n");
+                myWriter.write("\nplayer " + gameInstance.getVictorNumber() + " has informed player " + playerNumber + " that player " + gameInstance.getVictorNumber() + " has won\n");
                 myWriter.write("player " + playerNumber + " exits\n");
                 myWriter.write("player " + playerNumber + " final hand " + getPlayerHand());
                 myWriter.close();
