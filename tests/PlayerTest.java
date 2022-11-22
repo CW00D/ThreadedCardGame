@@ -131,8 +131,10 @@ public class PlayerTest {
     @Test
     public void playMoveTest(){
         CardGame.setGameWon(false);
-        Player p1 = (Player) CardGame.getPlayerList().get(2);
-        p1.run();
+        Player p3 = (Player) CardGame.getPlayerList().get(2);
+        p3.run();
+        assertTrue(CardGame.getGameWon());
+        assertTrue("Wrong move made",3 == CardGame.getVictorNumber());
 
     }
 }

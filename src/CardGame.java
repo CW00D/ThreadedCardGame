@@ -195,9 +195,6 @@ public class CardGame extends Thread{
             Player currentPlayer = players.get(i);
             currentPlayer.start();
         }
-        // Needed system output displaying winner
-
-
     }
 
     public static void main(String[] args) throws FileNotFoundException {
