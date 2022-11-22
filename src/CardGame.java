@@ -44,6 +44,15 @@ public class CardGame extends Thread{
         numberOfPlayers = num;
     }
 
+    public static void setPlayerList(){
+        players.clear();
+    }
+    public static void setDeckList() {
+        decks.clear();
+    }
+    public static void setPack(){
+        pack.clear();
+    }
     public static ArrayList getPlayerList(){
         return players;
     }

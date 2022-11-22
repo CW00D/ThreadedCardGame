@@ -59,6 +59,24 @@ public class CardGameTest {
 
     @AfterClass
     public static void tearDown(){
+        CardGame.setPack();
+        CardGame.setPlayerList();
+        CardGame.setDeckList();
+        for (int i=0;i<4;i++) {
+            File playerFile = new File("player" + i + "_output.txt");
+            try {
+                playerFile.delete();
+            } catch (Exception e) {
+            }
+        }
+
+        for (int j=0;j<4;j++) {
+            File deckFile = new File("deck" + j + "_output.txt");
+            try {
+                deckFile.delete();
+            } catch (Exception e) {
+            }
+        }
     }
 
     @Test
@@ -85,86 +103,14 @@ public class CardGameTest {
     public void createPlayersTest(){
         assertEquals("Incorrect amount of players created",4, CardGame.getPlayerList().size());
     }
-
     @Test
-    public void distributeCardsTest(){
+    public void distributedCardsTest(){
         Player p1 = (Player) CardGame.getPlayerList().get(0);
         int playerHandSize = p1.getPlayerHandList().size();
+        Card playerHandCard = (Card) p1.getPlayerHandList().get(3);
+        int cardValue = playerHandCard.getCardValue();
+
         assertEquals("Incorrect player hand size",4, playerHandSize);
-    }
-
-    @Test
-    public void selectCardToDiscardTest(){
-        Player p1 = (Player) CardGame.getPlayerList().get(0);
-        Card card = p1.selectCardToDiscard();
-
-        assertTrue("Discards players preferred card",p1.getPlayerNumber() != card.getCardValue());
-        assertTrue("Incorrect test pack format used",card.getCardValue() == 5);
-    }
-
-    @Test
-    public void getPlayerHandTest(){
-        Player p1 = (Player) CardGame.getPlayerList().get(0);
-        String hand = p1.getPlayerHand();
-        assertEquals("Incorrect player hand or test pack format","1 1 1 5 ", hand);
-    }
-    @Test
-    public void getDeckHandTest() {
-        ArrayList deckList = CardGame.getDeckList();
-        CardDeck d1 = (CardDeck) deckList.get(0);
-        String deckHand = d1.getDeck();
-        assertEquals("Incorrect player hand or test pack format", "5 5 5 5 ", deckHand);
-    }
-    @Test
-    public void outputFileTest(){
-        Player p1 = (Player) CardGame.getPlayerList().get(1);
-        CardGame.setVictorNumber(1);
-        p1.writeInitialHand();
-        p1.writeMove();
-        p1.writeFinalHand();
-        //assert(file created / read correct hand
-        try {
-            File myObj = new File("player1_output.txt");
-            Scanner myReader = new Scanner(myObj);
-            int count = 0;
-            while (myReader.hasNextLine()) {
-                count +=1;
-                String data = myReader.nextLine();
-                switch(count){
-                    case 1:
-                        assertEquals("Wrong initial hand output", "player 1 initial hand 1 1 1 5 ", data);
-                        break;
-                    case 2:
-                        assertEquals("No data should be present", "", data);
-                        break;
-                    case 3:
-                        assertEquals("Wrong win output", "player 2 has informed player 1 that player 2 has won", data);
-                        break;
-                    case 4:
-                        assertEquals("Wrong exit output", "player 1 exits", data);
-                        break;
-                    case 5:
-                        assertEquals("Wrong final hand output", "player 1 final hand 1 1 1 5 ", data);
-                        break;
-                    case 6:
-                        System.out.println("Should not have data here");
-                        break;
-                }
-            }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-    @Test
-    public void playerWinTest(){
-        CardGame.setGameWon(false);
-        Player p1 = (Player) CardGame.getPlayerList().get(1);
-        p1.run();
-        assertEquals("Wrong test pack used or error in run()", 2, (int) CardGame.getVictorNumber());
-        assertTrue("Wrong test pack used or error in run()",CardGame.getGameWon());
-
-
+        assertEquals("Incorrect player cards in hand",5, cardValue);
     }
 }
