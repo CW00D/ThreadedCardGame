@@ -47,12 +47,15 @@ public class CardGame extends Thread{
     public static void setPlayerList(){
         players.clear();
     }
+
     public static void setDeckList() {
         decks.clear();
     }
+
     public static void setPack(){
         pack.clear();
     }
+
     public static ArrayList getPlayerList(){
         return players;
     }
@@ -64,6 +67,7 @@ public class CardGame extends Thread{
     public static ArrayList getPack(){
         return pack;
     }
+
     //Methods:
     //---------------
     public static void userInputs(){

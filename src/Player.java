@@ -2,7 +2,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
+
+/**
+ *
+ * @author Christian Wood and Jacob Beeson
+ *
+ */
 
 public class Player extends Thread{
     //Attributes:
@@ -10,11 +17,13 @@ public class Player extends Thread{
     //the player number (also their preferred card)
     private final Integer playerNumber;
     //the cards in the player's hand
-    private ArrayList<Card> playerHand = new ArrayList<Card>();
+    private ArrayList<Card> playerHand = new ArrayList<>();
     //the deck the player pick cards up from
     private final CardDeck leftCardDeck;
     //the deck the player places cards to
     private final CardDeck rightCardDeck;
+    //randomizer instance for use in selecting cards
+    private Random random = new Random();
 
     //Constructor:
     //---------------
@@ -30,18 +39,18 @@ public class Player extends Thread{
         return playerNumber;
     }
 
-    public ArrayList getPlayerHandList(){
-        return playerHand;
-    }
     //run thread:
     //---------------
+    @Override
     public void run(){
         while (!CardGame.getGameWon()){
             if (checkWin()){
                 setVictoryAttributes();
             } else {
-                playMove();
-                writeMove();
+                if (leftCardDeck.getDeckHand().size()!=0){
+                    playMove();
+                    writeMove();
+                }
             }
         }
         writeFinalHand();
@@ -55,13 +64,18 @@ public class Player extends Thread{
     }
 
     private void playMove(){
-        Card cardDrawn = drawCard();
-        Card cardToPlace = selectCardToDiscard();
-        placeCard(cardToPlace);
+        Card cardToPlace;
+        Card cardDrawn;
+        synchronized (Player.class) {
+            cardDrawn = drawCard();
+            playerHand.add(cardDrawn);
+            cardToPlace = selectCardToDiscard();
+            placeCard(cardToPlace);
+        }
         try {
-            FileWriter myWriter = new FileWriter("player"+this.playerNumber+"_output.txt", true);
-            myWriter.write("\nplayer "+this.playerNumber+" draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
-            myWriter.write("\nplayer "+this.playerNumber+" discards a " + cardToPlace.getCardValue() + " to deck " + rightCardDeck.getDeckNumber() );
+            FileWriter myWriter = new FileWriter("player" + playerNumber + "_output.txt", true);
+            myWriter.write("\nplayer " + playerNumber + " draws a " + cardDrawn.getCardValue() + " from deck " + leftCardDeck.getDeckNumber());
+            myWriter.write("\nplayer " + playerNumber + " discards a " + cardToPlace.getCardValue() + " to deck " + rightCardDeck.getDeckNumber() );
             myWriter.close();
         } catch (IOException e) {
             System.out.println("An error occurred writing a move to the file.");
@@ -69,41 +83,26 @@ public class Player extends Thread{
         }
     }
 
-    //Two players may be able to call placeCard and drawCard simultaneously
-    private synchronized Card drawCard(){
+    private Card drawCard(){
         Card cardToAdd = leftCardDeck.drawCard();
-        playerHand.add(cardToAdd);
         return cardToAdd;
     }
-    /*This might prevent that
-    private Card drawCard(){
-        synchronized (CardDeck.deckHand) {
-            System.out.println("Player " + playerNumber + " draws a card. From a deck with " + leftCardDeck.getDeck());
-            return leftCardDeck.drawCard();
-        }
-    }
-    */
 
-    private synchronized void placeCard(Card cardToPlace){
+    private void placeCard(Card cardToPlace){
         rightCardDeck.dealCard(cardToPlace);
     }
 
     public Boolean checkWin(){
-        if (playerHand.get(0).getCardValue()==playerHand.get(1).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(2).getCardValue() && playerHand.get(0).getCardValue()==playerHand.get(3).getCardValue()){
-            return true;
-        } else {
-            return false;
-        }
+        return (playerHand.get(0).getCardValue().equals(playerHand.get(1).getCardValue()) && playerHand.get(0).getCardValue().equals(playerHand.get(2).getCardValue()) && playerHand.get(0).getCardValue().equals(playerHand.get(3).getCardValue()));
     }
 
     public Card selectCardToDiscard(){
-        ArrayList<Card> possibleDiscardCards = new ArrayList<Card>();
+        ArrayList<Card> possibleDiscardCards = new ArrayList<>();
         for (int i=0;i<playerHand.size();i++){
-            if (playerHand.get(i).getCardValue() != playerNumber) {
+            if (!(playerHand.get(i).getCardValue().equals(playerNumber))) {
                 possibleDiscardCards.add(playerHand.get(i));
             }
         }
-        Random random = new Random();
         int randomIndex = -1;
         if (possibleDiscardCards.size()==1){
             randomIndex = 0;
@@ -183,5 +182,9 @@ public class Player extends Thread{
                 e.printStackTrace();
             }
         }
+    }
+
+    public ArrayList getPlayerHandList() {
+        return playerHand;
     }
 }
