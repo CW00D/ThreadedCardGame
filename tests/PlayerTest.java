@@ -59,7 +59,6 @@ public class PlayerTest {
         }
     }
 
-
     @Test
     public void selectCardToDiscardTest(){
         Player p1 = (Player) CardGame.getPlayerList().get(0);

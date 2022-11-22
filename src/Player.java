@@ -186,5 +186,5 @@ public class Player extends Thread{
 
     public ArrayList getPlayerHandList() {
         return playerHand;
-    }
+    } 
 }

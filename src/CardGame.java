@@ -72,39 +72,38 @@ public class CardGame extends Thread{
     //---------------
     public static void userInputs(){
         Scanner input = new Scanner(System.in);
-
-        //checking number of players input is valid
-        boolean validNumOfPlayers = false;
-        Integer integerNumberOfPlayers = null;
-        while(!validNumOfPlayers) {
-            System.out.println("Please enter the number of players: ");
-            String numberOfPlayersInput = input.nextLine();
-            try {
-                integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
-                if (integerNumberOfPlayers <= 0){
-                    System.out.println("Please enter a non negative number of players. ");
-                    validNumOfPlayers = false;
-                } else{
-                    validNumOfPlayers = true;
-                }
-            }
-            catch (NumberFormatException nfe) {
-                System.out.println("wrong type of input");
-            }
-        }
-        numberOfPlayers = integerNumberOfPlayers;
-
         //checking pack input is valid
         boolean isValidPackType = false;
         String packLocationInput = null;
         while(!isValidPackType) {
+            //checking number of players input is valid
+            boolean validNumOfPlayers = false;
+            Integer integerNumberOfPlayers = null;
+            while (!validNumOfPlayers) {
+                System.out.println("Please enter the number of players: ");
+                String numberOfPlayersInput = input.nextLine();
+                try {
+                    integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
+                    if (integerNumberOfPlayers <= 0) {
+                        System.out.println("Please enter a non negative number of players. ");
+                        validNumOfPlayers = false;
+                    } else {
+                        numberOfPlayers = integerNumberOfPlayers;
+                        validNumOfPlayers = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                    System.out.println("wrong type of input");
+                }
+            }
             System.out.println("Please enter pack location: ");
             packLocationInput = input.nextLine();
             isValidPackType = validatePack(packLocationInput);
         }
-        packLocation = packLocationInput;
+
 
         input.close();
+        packLocation = packLocationInput;
+
     }
 
     public static boolean validatePack(String packLocation){
@@ -147,7 +146,6 @@ public class CardGame extends Thread{
     }
 
     public static void createPack(String packLocation) throws FileNotFoundException {
-        System.out.println("Creating Pack");
         File myObj = new File(packLocation);
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine()) {
@@ -157,11 +155,9 @@ public class CardGame extends Thread{
     }
 
     public static void createDecks(){
-        System.out.println("Creating decks");
         for (int i=1;i<=numberOfPlayers;i++){
             decks.add(new CardDeck(i));
         }
-
     }
 
     public static void distributeCards(){
