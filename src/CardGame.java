@@ -133,7 +133,6 @@ public class CardGame extends Thread{
             }
             myReader.close();
             if (counter == (numberOfPlayers * 8)){
-                System.out.println("Pack is valid. ");
                 return true;
             } else {
                 System.out.println("Not the right number of cards for the number of players. ");
@@ -185,7 +184,6 @@ public class CardGame extends Thread{
 
     public static void startGame(){
         CardGame.gameWon = false;
-        System.out.println("Starting the game. ");
         for (int i=0;i<numberOfPlayers;i++) {
             Player currentPlayer = players.get(i);
             currentPlayer.writeInitialHand();
@@ -198,7 +196,7 @@ public class CardGame extends Thread{
             currentPlayer.start();
         }
         // Needed system output displaying winner
-        System.out.println("player "+CardGame.getVictorNumber()+" wins");
+
 
     }
 
