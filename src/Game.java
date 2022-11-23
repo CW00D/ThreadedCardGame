@@ -10,71 +10,96 @@ import java.util.Scanner;
  */
 
 public class Game {
-    //Attributes:
-    //---------------
-    //private as they should only be used by CardGame instance
+    /*Attributes:
+    ---------------
+    */
+    //holds all the Player instances in the game
     private ArrayList<Player> players = new ArrayList<Player>();
+    //holds all the CardDeck instances in the game
     private ArrayList<CardDeck> decks = new ArrayList<CardDeck>();
+    //holds all the Card instances in the game
     private ArrayList<Card> pack = new ArrayList<Card>();
+    //the number of players in the game
     private int numberOfPlayers;
+    //the location/name of the pack text file
     private String packLocation;
-    private Boolean gameWon;
+    //whether the game has been won or not
+    private Boolean gameWon = false;
+    //the playerNumber of the winning player
     private Integer victorNumber;
 
-    //Getters and Setters:
-    //---------------
+    /*Constructor:
+    ---------------
+    */
+    public Game(){};
+
+    /*Getters and Setters:
+    ---------------
+    */
+    //returns whether the game has been won or not
     public Boolean getGameWon() {
         return gameWon;
     }
 
+    //returns the playerNumber of the winning player
     public Integer getVictorNumber() {
         return victorNumber;
     }
 
+    //returns the name/location of the pack text file
     public String getPackLocation() {
         return packLocation;
     }
 
+    //returns the list of players
     public ArrayList getPlayerList(){
         return players;
     }
 
+    //returns the list of decks
     public ArrayList getDeckList(){
         return decks;
     }
 
+    //returns the pack
     public ArrayList getPack(){
         return pack;
     }
 
+    //sets the gameWon attribute
     public void setGameWon(Boolean gameWon) {
         this.gameWon = gameWon;
     }
 
+    //sets the victorNumber attribute
     public void setVictorNumber(Integer victorNumber) {
         this.victorNumber = victorNumber;
     }
 
     // check
+    //sets the numberOfPlayers attribute
     public void setNumberOfPlayers(Integer num){
         numberOfPlayers = num;
     }
 
-    //Methods:
-    //---------------
+    /*Methods:
+    ---------------
+    */
+    //takes the user inputs and fills the game instance's attributes
     public void userInputs(){
         Scanner input = new Scanner(System.in);
-
         //checking number of players input is valid
         boolean validNumOfPlayers = false;
         Integer integerNumberOfPlayers = null;
         while(!validNumOfPlayers) {
             System.out.println("Please enter the number of players: ");
+            //reads the input from the command line
             String numberOfPlayersInput = input.nextLine();
             try {
                 integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
-                if (integerNumberOfPlayers <= 0){
-                    System.out.println("Please enter a non negative number of players. ");
+                //tests that the number of players is bigger or equal to 1
+                if (integerNumberOfPlayers < 1){
+                    System.out.println("Please enter a positive number of players. ");
                     validNumOfPlayers = false;
                 } else{
                     validNumOfPlayers = true;
@@ -86,7 +111,7 @@ public class Game {
         }
         numberOfPlayers = integerNumberOfPlayers;
 
-        //checking pack input is valid
+        //checking inputted pack is valid
         boolean isValidPackType = false;
         String packLocationInput = null;
         while(!isValidPackType) {
@@ -99,19 +124,26 @@ public class Game {
         input.close();
     }
 
+    //checks whether a pack location contains a valid pack
     public boolean validatePack(String packLocation){
         try {
+            //opening and reading pack
             File myObj = new File(packLocation);
             Scanner myReader = new Scanner(myObj);
             int counter = 0;
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
+                //checking that lines only contain a single value
+                //" " at the end of lines are automatically removed from files so
+                //no risk of eg "3 " being flagged as containing more than one value
                 if (data.contains(" ")) {
                     System.out.println("One of your lines contains more than a single number");
                     return false;
                 } else {
                     try{
+                        //checks that every value is an integer
                         Integer number = Integer.parseInt(data);
+                        //checks every number is positive
                         if (number < 0){
                             System.out.println("One of the cards was negative");
                             return false;
@@ -125,6 +157,8 @@ public class Game {
                 counter += 1;
             }
             myReader.close();
+            //checks that there are 8n values in the card pack where n is the number
+            //of players previously inputted by the user in the command line
             if (counter == (numberOfPlayers * 8)){
                 System.out.println("Pack is valid. ");
                 return true;
@@ -138,6 +172,7 @@ public class Game {
         }
     }
 
+    //creates a pack of cards for a given pack location
     public void createPack(String packLocation) throws FileNotFoundException {
         System.out.println("Creating Pack");
         File myObj = new File(packLocation);
@@ -148,6 +183,7 @@ public class Game {
         }
     }
 
+    //creates n decks (one for each player)
     public void createDecks(){
         System.out.println("Creating decks");
         for (int i=1;i<=numberOfPlayers;i++){
@@ -156,6 +192,20 @@ public class Game {
 
     }
 
+    //creates players
+    public void createPlayers(){
+        for (int i=0;i<numberOfPlayers;i++) {
+            //if i=0 then the player's deck will be the deck on the right of the
+            //last player so will have a deck number of numberOfPlayers - 1
+            if (i==0) {
+                players.add(new Player((i+1), decks.get(numberOfPlayers - 1), decks.get(i), this));
+            } else {
+                players.add(new Player((i+1), decks.get(i - 1), decks.get(i), this));
+            }
+        }
+    }
+
+    //distributes the cards in a round robing fashion to the players and then the decks
     public void distributeCards(){
         for (int i=0;i<4;i++){
             for (int j=0;j<numberOfPlayers;j++){
@@ -169,18 +219,9 @@ public class Game {
         }
     }
 
-    public void createPlayers(){
-        for (int i=0;i<numberOfPlayers;i++) {
-            if (i==0) {
-                players.add(new Player((i+1), decks.get(numberOfPlayers - 1), decks.get(i), this));
-            } else {
-                players.add(new Player((i+1), decks.get(i - 1), decks.get(i), this));
-            }
-        }
-    }
-
+    //starts the game by starting the player's run methods through .start()
     public void startGame(){
-        this.gameWon = false;
+        //check that none of the players has won off of the deal
         System.out.println("Starting the game. ");
         for (int i=0;i<numberOfPlayers;i++) {
             Player currentPlayer = players.get(i);
@@ -189,12 +230,12 @@ public class Game {
                 currentPlayer.setVictoryAttributes();
             }
         }
+        //loop through all the players and call .start() for them
         for (int i=0;i<numberOfPlayers;i++) {
             Player currentPlayer = players.get(i);
             currentPlayer.start();
         }
-        // Needed system output displaying winner
+        //Needed system output displaying winner
         System.out.println("player " + this.getVictorNumber() + " wins");
-
     }
 }

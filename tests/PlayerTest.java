@@ -38,6 +38,7 @@ public class PlayerTest {
             System.out.println("Unable to distribute cards");
         }
     }
+
     @After
     public  void tearDown(){
         game = null;
@@ -117,6 +118,7 @@ public class PlayerTest {
             e.printStackTrace();
         }
     }
+
     @Test
     public void playerWinTest(){
         game.setGameWon(false);
@@ -124,8 +126,6 @@ public class PlayerTest {
         p1.run();
         assertEquals("Wrong test pack used or error in run()", 2, (int) game.getVictorNumber());
         assertTrue("Wrong test pack used or error in run()",game.getGameWon());
-
-
     }
 
     @Test
