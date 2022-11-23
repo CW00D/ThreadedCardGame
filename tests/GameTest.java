@@ -84,6 +84,7 @@ public class GameTest {
     public void createPlayersTest(){
         assertEquals("Incorrect amount of players created",4, game.getPlayerList().size());
     }
+
     @Test
     public void distributedCardsTest(){
         Player p1 = (Player) game.getPlayerList().get(0);

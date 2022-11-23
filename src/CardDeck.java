@@ -10,39 +10,48 @@ import java.util.ArrayList;
  */
 
 public class CardDeck {
-    //Attributes:
-    //---------------
-    //the deck number
+    /*Attributes:
+    ---------------
+    */
+    //the deck's number
     private final Integer deckNumber;
-    //queue of the cards in a deck
+    //the cards in a deck
     private ArrayList<Card> deckHand = new ArrayList<Card>();
 
-    //Constructor:
-    //---------------
+    /*Constructor:
+    ---------------
+    */
     public CardDeck(Integer deckNumber) {
         this.deckNumber = deckNumber;
     }
 
-    //Getters and Setters:
-    //---------------
+    /*Getters and Setters:
+    ---------------
+    */
+    //returns the deck's number
     public Integer getDeckNumber() {
         return deckNumber;
     }
 
+    //returns the cards in a deck
     public ArrayList<Card> getDeckHand() {
         return deckHand;
     }
 
-    //Methods
-    //---------------
+    /*Methods:
+    ---------------
+    */
+    //adds a card instance to the deck's hand
     public void dealCard(Card card){
         deckHand.add(card);
     }
 
+    //returns the card at the top (front) of the deck
     public Card drawCard(){
         return deckHand.remove(0);
     }
 
+    //returns a string of the cards in the deck
     public String getDeck(){
         String deck = "";
         for (int i=0;i<deckHand.size();i++) {
@@ -51,6 +60,7 @@ public class CardDeck {
         return deck;
     }
 
+    //writes the decks hand to an output file
     public void writeHand(){
         try {
             File myObj = new File("deck" + deckNumber + "_output.txt");

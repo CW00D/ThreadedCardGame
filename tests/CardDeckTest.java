@@ -40,6 +40,7 @@ public class CardDeckTest {
         }
 
     }
+
     @After
     public  void tearDown(){
         game = null;
@@ -60,6 +61,7 @@ public class CardDeckTest {
             }
         }
     }
+
     @Test
     public void getDeckHandTest() {
         ArrayList deckList = game.getDeckList();

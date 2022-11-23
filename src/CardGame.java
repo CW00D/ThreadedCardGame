@@ -7,26 +7,26 @@ import java.io.FileNotFoundException;
  */
 
 public class CardGame {
-
     public static void main(String[] args) throws FileNotFoundException {
+        //creating an instance of the game class
         Game game = new Game();
+
         //getting user inputs
         game.userInputs();
 
-        //create decks
+        //creating decks
         game.createDecks();
+
+        //creating players
         game.createPlayers();
 
         //create pack
         game.createPack(game.getPackLocation());
 
-        //distribute cards to players
+        //distribute cards to players and decks
         game.distributeCards();
 
         //start game
         game.startGame();
-        //we start a thread which runs the game
-        //this thread is waiting to end the game when it is interrupted by one of the players (when the player has won)
-        //when interrupted it stops the thread group with
     }
 }

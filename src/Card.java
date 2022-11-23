@@ -5,18 +5,23 @@
  */
 
 public class Card {
-    //Attributes:
-    //---------------
+    /*Attributes:
+    ---------------
+    */
+    //the value of the card
     private final Integer cardValue;
 
-    //Constructor:
-    //---------------
+    /*Constructor:
+    ---------------
+    */
     public Card(Integer cardValue) {
         this.cardValue = cardValue;
     }
 
-    //Getters and Setters:
-    //---------------
+    /*Getters and Setters:
+    ---------------
+    */
+    //returns the card's value
     public Integer getCardValue() {
         return cardValue;
     }

@@ -7,23 +7,3 @@
 test_pack_0.txt,8\b\8b8ac7748bd2d3ad79afbd69dfe82df594fd94a0
 =
 test_pack.txt,e\1\e1d8777be62637a7c7ec790435fc6bccaa50c606
-B
-player3_output.txt,9\5\95604f8d9190540097085465597830e8c87c8c9a
-B
-player4_output.txt,d\2\d25f879390e2a0b7f88629667263ecb1e78af89a
-B
-player1_output.txt,1\5\156019f52a4f63e6206e3aaeef3b855048f06708
-@
-deck2_output.txt,0\8\08bf19b678271b8dc8264927c3503765d88b75ca
-B
-player2_output.txt,0\6\0632630666aabd4938b0adaec51fffb618ea00e4
-@
-deck4_output.txt,6\5\651c8453a6863d0fb98590737ff2d359ceae856b
-@
-deck1_output.txt,a\1\a17905998b51b9443533d2faf66936da565fc73e
-@
-deck3_output.txt,3\7\3760925405b51c087df38293682c4ad2ca93ce48
-E
-tests/PlayerTest.java,1\1\113e2bfcb035a455d2f01c5dda6b6635a5c1434b
-D
-tests/TestSuite.java,c\c\cccdb2a40ee487ebc6e141912e0854c8d31af7ba
