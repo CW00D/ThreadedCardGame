@@ -31,7 +31,7 @@ public class Game {
     /*Constructor:
     ---------------
     */
-    public Game(){};
+    public Game(){ /* TODO document why this constructor is empty */ }
 
     /*Getters and Setters:
     ---------------
@@ -112,7 +112,6 @@ public class Game {
                     integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
                     if (integerNumberOfPlayers <= 0) {
                         System.out.println("Please enter a non negative number of players. ");
-                        validNumOfPlayers = false;
                     } else {
                         numberOfPlayers = integerNumberOfPlayers;
                         validNumOfPlayers = true;
@@ -139,7 +138,7 @@ public class Game {
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 //checking that lines only contain a single value
-                //" " at the end of lines are automatically removed from files so
+                //" " at the end of lines they are automatically removed from files so
                 //no risk of eg "3 " being flagged as containing more than one value
                 if (data.contains(" ")) {
                     System.out.println("One of your lines contains more than a single number");
@@ -185,6 +184,7 @@ public class Game {
             String data = myReader.nextLine();
             pack.add(new Card(Integer.parseInt(data)));
         }
+        myReader.close();
     }
 
     //creates n decks (one for each player)

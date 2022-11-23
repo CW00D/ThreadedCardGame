@@ -55,7 +55,7 @@ public class CardDeck {
     public String getDeck(){
         String deck = "";
         for (int i=0;i<deckHand.size();i++) {
-            deck = deck + String.valueOf(deckHand.get(i).getCardValue())+" ";
+            deck = deck + deckHand.get(i).getCardValue()+" ";
         }
         return deck;
     }

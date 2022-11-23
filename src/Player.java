@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
 
 /**
@@ -107,8 +106,7 @@ public class Player extends Thread{
 
     //calls the drawCard method from the deck on the player's left
     private Card drawCard(){
-        Card cardToAdd = leftCardDeck.drawCard();
-        return cardToAdd;
+        return leftCardDeck.drawCard();
     }
 
     //calls the dealCard method from the deck on the player's right and gives it the card instance to place

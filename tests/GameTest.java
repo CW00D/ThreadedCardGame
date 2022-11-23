@@ -67,23 +67,40 @@ public class GameTest {
     public void userInputsTest(){
         //testing invalid number of player inputs
         // test negative num of players, non-integers, pack is not 8 x number of players
-        String data = "-3"+"\ntest_pack_0.txt" + "\ntext"+  "\n3"+"\ntest_pack_0.txt" +
-        "\n4"+"\ntest_pack_0.txt" ;
+        String data = """
+                -3
+                test_pack_0.txt
+                text
+                3
+                test_pack_0.txt
+                4
+                test_pack_0.txt""";
 
         System.setIn(new ByteArrayInputStream(data.getBytes()));
 
         game.userInputs();
-        assertTrue(4 == game.getNumberOfPlayers());
+        assertEquals(4, (int) game.getNumberOfPlayers());
         assertEquals("test_pack_0.txt",game.getPackLocation());
 
         // testing if file does not exist/ invalid file types (same test packs as used in 'validatePackTest()')
-        data = "4"+"\ndoes_not_exist" + "\n4"+"\ntest_pack_1.txt" + "\n4"+"\ntest_pack_2.txt" +
-                "\n4"+"\ntest_pack_3.txt" + "\n4"+"\ntest_pack_4.txt" + "\n4"+"\ntest_pack_0.txt";
+        data = """
+                4
+                does_not_exist
+                4
+                test_pack_1.txt
+                4
+                test_pack_2.txt
+                4
+                test_pack_3.txt
+                4
+                test_pack_4.txt
+                4
+                test_pack_0.txt""";
 
         System.setIn(new ByteArrayInputStream(data.getBytes()));
 
         game.userInputs();
-        assertTrue(4 == game.getNumberOfPlayers());
+        assertEquals(4, (int) game.getNumberOfPlayers());
         assertEquals("test_pack_0.txt",game.getPackLocation());
     }
 
