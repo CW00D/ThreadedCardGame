@@ -1,0 +1,42 @@
+
+E
+java:S37401"/Provide the parametrized type for this generic.(ıç†œ
+N	java:S106f"9Replace this use of System.out or System.err by a logger.(–’Áğ
+T	java:S106™"9Replace this use of System.out or System.err by a logger.(×ÂÛşÿÿÿÿ
+X	java:S899 "BDo something with the "boolean" value returned by "createNewFile".(ÎÕş
+O	java:S106¢"9Replace this use of System.out or System.err by a logger.(©ÿÈ²
+O	java:S106«"9Replace this use of System.out or System.err by a logger.(—Ï·Í
+O	java:S106·"9Replace this use of System.out or System.err by a logger.(Š”µÃ
+T	java:S106Ç"9Replace this use of System.out or System.err by a logger.(õ¥Ê›üÿÿÿÿ
+T	java:S106Ò"9Replace this use of System.out or System.err by a logger.(’¥¡ôúÿÿÿÿ
+d
+java:S1192™"HDefine a constant instead of duplicating this literal "player " 6 times.(×ÂÛşÿÿÿÿ
+d
+java:S1192b"IDefine a constant instead of duplicating this literal "
+player " 5 times.(çÍß”şÿÿÿÿ
+b
+java:S1192a"LDefine a constant instead of duplicating this literal "_output.txt" 6 times.(áŸÓ¦
+]
+java:S1192a"GDefine a constant instead of duplicating this literal "player" 6 times.(áŸÓ¦
+†
+java:S13191"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ıç†œ
+T
+java:S1155?">Use isEmpty() to check whether the collection is empty or not.(šêû
+8
+java:S1643"Use a StringBuilder instead.(‰ ó¢ıÿÿÿÿ
+@
+java:S5411;"*Use the primitive boolean expression here.(¿¼ •
+E
+java:S5411<"*Use the primitive boolean expression here.(âôÊµıÿÿÿÿ
+X
+java:S4973¿"<Strings and Boxed types should be compared using "equals()".(‡¼¹èúÿÿÿÿ
+d
+java:S2095³"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(ìÑûÿÿÿÿ
+_
+java:S2095§"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(î’ê…
+d
+java:S2095Ì"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(ìÑûÿÿÿÿ
+d
+java:S2095Á"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(ìÑûÿÿÿÿ
+^
+java:S2095a"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(áŸÓ¦

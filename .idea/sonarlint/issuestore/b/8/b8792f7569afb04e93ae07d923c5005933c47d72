@@ -1,0 +1,40 @@
+
+Q
+java:S37407"/Provide the parametrized type for this generic.(‹ñœ—ÿÿÿÿÿ8Äö‹¨Ê0
+Q
+java:S3740<"/Provide the parametrized type for this generic.(€¿÷ıÿÿÿÿÿ8Äö‹¨Ê0
+Q
+java:S3740A"/Provide the parametrized type for this generic.(²”Âœùÿÿÿÿ8Äö‹¨Ê0
+T
+java:S1135""2Complete the task associated to this TODO comment.(­×Ãùÿÿÿÿ8ıÔ¿©Ê0
+U	java:S106m"9Replace this use of System.out or System.err by a logger.(Àèìº8¢÷‹¨Ê0
+U	java:S106r"9Replace this use of System.out or System.err by a logger.(˜ëş§8„³ì¨Ê0
+U	java:S106x"9Replace this use of System.out or System.err by a logger.(Ä‚æ×8„³ì¨Ê0
+U	java:S106{"9Replace this use of System.out or System.err by a logger.(æ’’Ó8„³ì¨Ê0
+[	java:S106"9Replace this use of System.out or System.err by a logger.(¶ù·×ÿÿÿÿÿ8„³ì¨Ê0
+[	java:S106˜"9Replace this use of System.out or System.err by a logger.(¡¼öüÿÿÿÿ8„ôì¨Ê0
+[	java:S106"9Replace this use of System.out or System.err by a logger.(¯µÙ†ûÿÿÿÿ8„ôì¨Ê0
+V	java:S106§"9Replace this use of System.out or System.err by a logger.(øÔ÷‚8„ôì¨Ê0
+V	java:S106ª"9Replace this use of System.out or System.err by a logger.(Ä“Ïğ8„ôì¨Ê0
+[	java:S106®"9Replace this use of System.out or System.err by a logger.(üšÃüùÿÿÿÿ8ü³í¨Ê0
+[	java:S106À"9Replace this use of System.out or System.err by a logger.(§³½›ùÿÿÿÿ8ü³í¨Ê0
+V	java:S106å"9Replace this use of System.out or System.err by a logger.(‹ØÔ8´í¨Ê0
+V	java:S106ó"9Replace this use of System.out or System.err by a logger.(¦ÅÕØ8´í¨Ê0
+v
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(Û“8¢÷‹¨Ê0
+v
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(å¬Ûì8¢÷‹¨Ê0
+{
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(à×…êÿÿÿÿÿ8¢÷‹¨Ê0
+’
+java:S13197"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(‹ñœ—ÿÿÿÿÿ8¢÷‹¨Ê0
+’
+java:S1319<"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(€¿÷ıÿÿÿÿÿ8¢÷‹¨Ê0
+’
+java:S1319A"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(²”Âœùÿÿÿÿ8¢÷‹¨Ê0
+X
+java:S1141“"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8¢÷‹¨Ê0
+M
+java:S5411é"*Use the primitive boolean expression here.(±…´“ıÿÿÿÿ8ŞÎÄ©Ê0
+h
+java:S2095ˆ"EUse try-with-resources or close this "Scanner" in a "finally" clause.(€–±äÿÿÿÿÿ8ø‹¨Ê0
