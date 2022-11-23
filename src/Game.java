@@ -189,7 +189,6 @@ public class Game {
 
     //creates n decks (one for each player)
     public void createDecks(){
-        System.out.println("Creating decks");
         for (int i=1;i<=numberOfPlayers;i++){
             decks.add(new CardDeck(i));
         }
@@ -226,7 +225,6 @@ public class Game {
     //starts the game by starting the player's run methods through .start()
     public void startGame(){
         //check that none of the players has won off of the deal
-        System.out.println("Starting the game. ");
         for (int i=0;i<numberOfPlayers;i++) {
             Player currentPlayer = players.get(i);
             currentPlayer.writeInitialHand();
@@ -239,7 +237,5 @@ public class Game {
             Player currentPlayer = players.get(i);
             currentPlayer.start();
         }
-        //Needed system output displaying winner
-        System.out.println("player " + this.getVictorNumber() + " wins");
     }
 }
