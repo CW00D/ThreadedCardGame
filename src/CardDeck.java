@@ -54,8 +54,8 @@ public class CardDeck {
     //returns a string of the cards in the deck
     public String getDeck(){
         String deck = "";
-        for (int i=0;i<deckHand.size();i++) {
-            deck = deck + deckHand.get(i).getCardValue()+" ";
+        for (Card card : deckHand) {
+            deck = deck + card.getCardValue() + " ";
         }
         return deck;
     }

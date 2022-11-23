@@ -60,7 +60,7 @@ public class Player extends Thread{
             if (checkWin()){
                 setVictoryAttributes();
             } else {
-                if (leftCardDeck.getDeckHand().size()!=0){
+                if (!leftCardDeck.getDeckHand().isEmpty()){
                     playMove();
                     writeMove();
                 }
@@ -123,9 +123,9 @@ public class Player extends Thread{
     public Card selectCardToDiscard(){
         ArrayList<Card> possibleDiscardCards = new ArrayList<>();
         //creates an ArrayList filled with all the cards that aren't the player's preferred card
-        for (int i=0;i<playerHand.size();i++){
-            if (!(playerHand.get(i).getCardValue().equals(playerNumber))) {
-                possibleDiscardCards.add(playerHand.get(i));
+        for (Card card : playerHand) {
+            if (!(card.getCardValue().equals(playerNumber))) {
+                possibleDiscardCards.add(card);
             }
         }
         //selects a random integer which is the index for the card that we will remove and returns the card
@@ -138,8 +138,8 @@ public class Player extends Thread{
     //returns a string of the cards in the player's hand
     public String getPlayerHand(){
         String hand = "";
-        for (int i=0;i<playerHand.size();i++) {
-            hand = hand + String.valueOf(playerHand.get(i).getCardValue())+" ";
+        for (Card card : playerHand) {
+            hand = hand + card.getCardValue() + " ";
         }
         return hand;
     }

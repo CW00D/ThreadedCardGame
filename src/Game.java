@@ -31,7 +31,7 @@ public class Game {
     /*Constructor:
     ---------------
     */
-    public Game(){ /* TODO document why this constructor is empty */ }
+    public Game(){ /* Nothing to instantiate */ }
 
     /*Getters and Setters:
     ---------------
@@ -104,7 +104,7 @@ public class Game {
         while(!isValidPackType) {
             //checking number of players input is valid
             boolean validNumOfPlayers = false;
-            Integer integerNumberOfPlayers = null;
+            Integer integerNumberOfPlayers;
             while (!validNumOfPlayers) {
                 System.out.println("Please enter the number of players: ");
                 String numberOfPlayersInput = input.nextLine();
