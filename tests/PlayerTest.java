@@ -9,11 +9,16 @@ import java.util.Scanner;
 import static org.junit.Assert.*;
 
 public class PlayerTest {
-    public Game game = new Game();
+    private Game game;
+    private Player p1;
 
     @Before
     public void setUp(){
+        game = new Game();
+
         game.setNumberOfPlayers(4);
+        game.setGameWon(false);
+        game.setPackLocation("test_pack_0.txt");
         try {
             game.createDecks();
         } catch (Exception e){
@@ -27,7 +32,7 @@ public class PlayerTest {
         }
 
         try {
-            game.createPack("test_pack_0.txt");
+            game.createPack();
         } catch (FileNotFoundException e){
             System.out.println("Unable to create testing pack: FileNotFoundException");
         }
@@ -37,53 +42,50 @@ public class PlayerTest {
         } catch (Exception e){
             System.out.println("Unable to distribute cards");
         }
+
+        p1 = (Player) game.getPlayerList().get(0);
     }
 
     @After
     public  void tearDown(){
         game = null;
-
-        for (int i=0;i<4;i++) {
+        p1 = null;
+        // Deleting any possible output files created during testing
+        for (int i=1;i<5;i++) {
             File playerFile = new File("player" + i + "_output.txt");
             try {
                 playerFile.delete();
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-        for (int j=0;j<4;j++) {
+        for (int j=1;j<5;j++) {
             File deckFile = new File("deck" + j + "_output.txt");
             try {
                 deckFile.delete();
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
-
     @Test
     public void selectCardToDiscardTest(){
-        Player p1 = (Player) game.getPlayerList().get(0);
         Card card = p1.selectCardToDiscard();
 
-        assertTrue("Discards players preferred card",p1.getPlayerNumber() != card.getCardValue());
-        assertTrue("Incorrect test pack format used",card.getCardValue() == 5);
+        assertNotSame("Discards players preferred card", p1.getPlayerNumber(), card.getCardValue());
+        assertEquals("Incorrect test pack format used", 100, (int) card.getCardValue());
     }
 
     @Test
     public void getPlayerHandTest(){
-        Player p1 = (Player) game.getPlayerList().get(0);
         String hand = p1.getPlayerHand();
-        assertEquals("Incorrect player hand or test pack format","1 1 1 5 ", hand);
+        assertEquals("Incorrect player hand or test pack format","1 1 1 100 ", hand);
     }
 
     @Test
-    public void outputPlayerFileTest(){
-        Player p1 = (Player) game.getPlayerList().get(0);
-        System.out.println(p1.getPlayerNumber());
-        game.setVictorNumber(2);
+    public void writeInitialHandTest(){
         p1.writeInitialHand();
-        p1.writeFinalHand();
-        //assert(file created / read correct hand
         try {
             File myObj = new File("player1_output.txt");
             Scanner myReader = new Scanner(myObj);
@@ -91,25 +93,9 @@ public class PlayerTest {
             while (myReader.hasNextLine()) {
                 count +=1;
                 String data = myReader.nextLine();
-                switch(count){
-                    case 1:
-                        assertEquals("Wrong initial hand output", "player 1 initial hand 1 1 1 5 ", data);
-                        break;
-                    case 2:
-                        assertEquals("No data should be present", "", data);
-                        break;
-                    case 3:
-                        assertEquals("Wrong win output", "player 2 has informed player 1 that player 2 has won", data);
-                        break;
-                    case 4:
-                        assertEquals("Wrong exit output", "player 1 exits", data);
-                        break;
-                    case 5:
-                        assertEquals("Wrong final hand output", "player 1 final hand 1 1 1 5 ", data);
-                        break;
-                    case 6:
-                        System.out.println("Should not have data here");
-                        break;
+                switch (count) {
+                    case 1 -> assertEquals("Wrong initial hand output", "player 1 initial hand 1 1 1 100 ", data);
+                    case 2 -> System.out.println("Should not have data here");
                 }
             }
             myReader.close();
@@ -120,21 +106,56 @@ public class PlayerTest {
     }
 
     @Test
-    public void playerWinTest(){
-        game.setGameWon(false);
-        Player p1 = (Player) game.getPlayerList().get(1);
-        p1.run();
-        assertEquals("Wrong test pack used or error in run()", 2, (int) game.getVictorNumber());
+    public void writeFinalHandTest(){
+        // setting victor number so player 1 gets correct final hand output
+        game.setVictorNumber(2);
+        p1.writeFinalHand();
+        // checking that players output is correct
+        try {
+            File myObj = new File("player1_output.txt");
+            Scanner myReader = new Scanner(myObj);
+            int count = 0;
+            while (myReader.hasNextLine()) {
+                count +=1;
+                String data = myReader.nextLine();
+                switch (count) {
+                    case 1 -> assertEquals("No data should be present", "", data);
+                    case 2 -> assertEquals("Wrong win output", "player 2 has informed player 1 that player 2 has won", data);
+                    case 3 -> assertEquals("Wrong exit output", "player 1 exits", data);
+                    case 4 -> assertEquals("Wrong final hand output", "player 1 final hand 1 1 1 100 ", data);
+                    case 6 -> System.out.println("Should not have data here");
+                }
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void setVictoryAttributesTest(){
+        p1.setVictoryAttributes();
+        assertEquals("Wrong test pack used or error in run()", 1, (int) game.getVictorNumber());
         assertTrue("Wrong test pack used or error in run()",game.getGameWon());
     }
 
     @Test
-    public void playMoveTest(){
-        game.setGameWon(false);
+    public void runTest(){
         Player p3 = (Player) game.getPlayerList().get(2);
         p3.run();
-        assertTrue(game.getGameWon());
-        assertTrue("Wrong move made",3 == game.getVictorNumber());
 
+        // getting sizes of decks to left and right of player3 after player3 moves
+        CardDeck d2 = (CardDeck) game.getDeckList().get(1);
+        CardDeck d3 = (CardDeck) game.getDeckList().get(2);
+
+        int deck2Size = d2.getDeckHand().size();
+        int deck3Size = d3.getDeckHand().size();
+
+        assertTrue(game.getGameWon());
+        assertEquals("Wrong move made", 3, (int) game.getVictorNumber());
+
+        assertEquals("Card discarded to wrong deck", 5, deck3Size);
+        assertEquals("Card drawn from wrong deck", 3, deck2Size);
     }
 }

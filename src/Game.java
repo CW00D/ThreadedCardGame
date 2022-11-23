@@ -66,6 +66,11 @@ public class Game {
         return pack;
     }
 
+    public Integer getNumberOfPlayers(){
+        return this.numberOfPlayers;
+    }
+
+
     //sets the gameWon attribute
     public void setGameWon(Boolean gameWon) {
         this.gameWon = gameWon;
@@ -79,49 +84,49 @@ public class Game {
     // check
     //sets the numberOfPlayers attribute
     public void setNumberOfPlayers(Integer num){
-        numberOfPlayers = num;
+        this.numberOfPlayers = num;
     }
 
+    public void setPackLocation(String packLocation){
+        this.packLocation = packLocation;
+    }
+    //Methods:
+    //---------------
     /*Methods:
     ---------------
     */
     //takes the user inputs and fills the game instance's attributes
     public void userInputs(){
         Scanner input = new Scanner(System.in);
-        //checking number of players input is valid
-        boolean validNumOfPlayers = false;
-        Integer integerNumberOfPlayers = null;
-        while(!validNumOfPlayers) {
-            System.out.println("Please enter the number of players: ");
-            //reads the input from the command line
-            String numberOfPlayersInput = input.nextLine();
-            try {
-                integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
-                //tests that the number of players is bigger or equal to 1
-                if (integerNumberOfPlayers < 1){
-                    System.out.println("Please enter a positive number of players. ");
-                    validNumOfPlayers = false;
-                } else{
-                    validNumOfPlayers = true;
-                }
-            }
-            catch (NumberFormatException nfe) {
-                System.out.println("wrong type of input");
-            }
-        }
-        numberOfPlayers = integerNumberOfPlayers;
-
-        //checking inputted pack is valid
+        //checking pack input is valid
         boolean isValidPackType = false;
         String packLocationInput = null;
         while(!isValidPackType) {
+            //checking number of players input is valid
+            boolean validNumOfPlayers = false;
+            Integer integerNumberOfPlayers = null;
+            while (!validNumOfPlayers) {
+                System.out.println("Please enter the number of players: ");
+                String numberOfPlayersInput = input.nextLine();
+                try {
+                    integerNumberOfPlayers = Integer.parseInt(numberOfPlayersInput);
+                    if (integerNumberOfPlayers <= 0) {
+                        System.out.println("Please enter a non negative number of players. ");
+                        validNumOfPlayers = false;
+                    } else {
+                        numberOfPlayers = integerNumberOfPlayers;
+                        validNumOfPlayers = true;
+                    }
+                } catch (NumberFormatException nfe) {
+                    System.out.println("wrong type of input");
+                }
+            }
             System.out.println("Please enter pack location: ");
             packLocationInput = input.nextLine();
             isValidPackType = validatePack(packLocationInput);
         }
-        packLocation = packLocationInput;
-
         input.close();
+        packLocation = packLocationInput;
     }
 
     //checks whether a pack location contains a valid pack
@@ -173,9 +178,8 @@ public class Game {
     }
 
     //creates a pack of cards for a given pack location
-    public void createPack(String packLocation) throws FileNotFoundException {
-        System.out.println("Creating Pack");
-        File myObj = new File(packLocation);
+    public void createPack() throws FileNotFoundException {
+        File myObj = new File(this.packLocation);
         Scanner myReader = new Scanner(myObj);
         while (myReader.hasNextLine()) {
             String data = myReader.nextLine();

@@ -21,7 +21,7 @@ public class CardGame {
         game.createPlayers();
 
         //create pack
-        game.createPack(game.getPackLocation());
+        game.createPack();
 
         //distribute cards to players and decks
         game.distributeCards();
